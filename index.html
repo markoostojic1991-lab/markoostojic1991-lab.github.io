@@ -36,12 +36,28 @@
             font-size: 2.05rem; 
             line-height: 1.5; 
             text-shadow: 0 2px 8px rgba(0,0,0,0.2); 
+            min-height: 200px;
         }
         
         .srce { 
             font-size: 4.5rem; 
             margin: 25px 0; 
             animation: pulsiraj 2s infinite; 
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 2.05rem;
+            background-color: white;
+            margin-left: 5px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
 
         @keyframes pulsiraj {
@@ -61,20 +77,65 @@
     <script>
         const poruka = `Nadam se da si slobodna sredinom Oktobra. Voleo bih da odemo do Beča. Biće tamo i Jakov tih dana. Ponesi osmeh. Za sve ostalo ćemo lako.`;
         
-        const reci = poruka.split(" ");
+        const karakteri = poruka.split(""); // Rastavljanje na pojedinačne karaktere (slova, razmake, tačke...)
         const tekstElement = document.getElementById("tekst");
         let index = 0;
-
-        function prikaziRecPoRec() {
-            if (index < reci.length) {
-                tekstElement.textContent += reci[index] + " ";
-                index++;
-                setTimeout(prikaziRecPoRec, 1100); // svake ~1 sekunde nova reč
+        let pauzaIzmedjuKaraktera = 180; // 180 milisekundi između slova (sporije otkucavanje)
+        let pauzaNaKraju = 7000; // 7 sekundi pauze na kraju
+        
+        let treperi = null; // Za trepereći kursor
+        
+        function dodajKursor() {
+            // Ako već postoji kursor, ukloni ga
+            if (treperi) {
+                treperi.remove();
+            }
+            // Dodaj novi kursor
+            treperi = document.createElement("span");
+            treperi.className = "cursor";
+            tekstElement.appendChild(treperi);
+        }
+        
+        function ukloniKursor() {
+            if (treperi) {
+                treperi.remove();
+                treperi = null;
             }
         }
-
-        // Počni prikazivanje teksta
-        setTimeout(prikaziRecPoRec, 800);
+        
+        function ocistiTekst() {
+            tekstElement.textContent = "";
+            ukloniKursor();
+        }
+        
+        function prikaziSlovoPoSlovo() {
+            if (index < karakteri.length) {
+                // Dodaj trenutno slovo u tekst
+                tekstElement.textContent += karakteri[index];
+                index++;
+                
+                // Kursor uvek stoji na kraju trenutnog teksta
+                ukloniKursor();
+                dodajKursor();
+                
+                setTimeout(prikaziSlovoPoSlovo, pauzaIzmedjuKaraktera);
+            } else {
+                // Kada dođe do kraja teksta
+                ukloniKursor(); // Ukloni kursor
+                
+                // Sačekaj 7 sekundi pa kreni ispočetka
+                setTimeout(() => {
+                    ocistiTekst();
+                    index = 0;
+                    dodajKursor(); // Dodaj kursor na početak
+                    prikaziSlovoPoSlovo();
+                }, pauzaNaKraju);
+            }
+        }
+        
+        // Dodaj početni kursor i započni prikazivanje
+        dodajKursor();
+        setTimeout(prikaziSlovoPoSlovo, 800);
     </script>
 </body>
 </html>
