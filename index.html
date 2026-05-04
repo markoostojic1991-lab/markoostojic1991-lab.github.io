@@ -55,6 +55,24 @@
             vertical-align: middle;
         }
         
+        .muzika-dugme {
+            margin-top: 35px;
+            padding: 14px 32px;
+            font-size: 1.35rem;
+            background: white;
+            color: #d63384;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+            transition: all 0.3s;
+        }
+        
+        .muzika-dugme:hover {
+            transform: scale(1.08);
+            background: #ffe4f0;
+        }
+
         @keyframes blink {
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0; }
@@ -72,6 +90,10 @@
         <h1>Nadam se...</h1>
         <div class="srce">💗</div>
         <p id="tekst"></p>
+        
+        <button class="muzika-dugme" onclick="pokreniMuziku()">
+            🎵 Pusti muziku
+        </button>
     </div>
 
     <!-- Audio player -->
@@ -87,7 +109,6 @@
         let index = 0;
         let pauzaIzmedjuKaraktera = 180;
         let pauzaNaKraju = 7000;
-        
         let treperi = null;
 
         function dodajKursor() {
@@ -122,30 +143,26 @@
             }
         }
 
-        // === AUTOMATSKO PUŠTANJE MUZIKE ===
+        // === FUNKCIJA ZA MUZIKU ===
         const audio = document.getElementById("audio");
 
         function pokreniMuziku() {
-            audio.currentTime = 69;   // kreće od 69. sekunde
-            audio.play().catch(err => {
-                console.log("Autoplay blokiran:", err);
-            });
+            audio.currentTime = 70;        // kreće od 70. sekunde
+            audio.play();
+            // Opcionalno: sakrij dugme posle puštanja
+            // event.target.style.display = "none";
         }
 
-        // Pokušaj da pusti muziku odmah
+        // Pokretanje teksta + pokušaj autoplay
         window.addEventListener('load', () => {
             dodajKursor();
             setTimeout(prikaziSlovoPoSlovo, 800);
             
-            // Automatsko puštanje
-            pokreniMuziku();
-            
-            // Ako browser blokira autoplay, pusti kad korisnik klikne bilo gde
-            document.body.addEventListener('click', () => {
-                if (audio.paused) {
-                    pokreniMuziku();
-                }
-            }, { once: true });
+            // Pokušaj automatsko puštanje (neki browseri će ga blokirati)
+            setTimeout(() => {
+                audio.currentTime = 69;
+                audio.play().catch(() => {}); // tiho ignoriši grešku
+            }, 1500);
         });
     </script>
 </body>
