@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beč Oktobar</title>
+    <title>Ajmo-Ajde</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&display=swap');
 
@@ -147,10 +147,8 @@
         const audio = document.getElementById("audio");
 
         function pokreniMuziku() {
-            audio.currentTime = 70;        // kreće od 70. sekunde
+            audio.currentTime = 0;     // kreće OD POČETKA
             audio.play();
-            // Opcionalno: sakrij dugme posle puštanja
-            // event.target.style.display = "none";
         }
 
         // Pokretanje teksta + pokušaj autoplay
@@ -158,10 +156,10 @@
             dodajKursor();
             setTimeout(prikaziSlovoPoSlovo, 800);
             
-            // Pokušaj automatsko puštanje (neki browseri će ga blokirati)
+            // Pokušaj automatsko puštanje od početka
             setTimeout(() => {
-                audio.currentTime = 69;
-                audio.play().catch(() => {}); // tiho ignoriši grešku
+                audio.currentTime = 0;
+                audio.play().catch(() => {}); 
             }, 1500);
         });
     </script>
