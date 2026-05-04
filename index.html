@@ -74,68 +74,79 @@
         <p id="tekst"></p>
     </div>
 
+    <!-- Audio player -->
+    <audio id="audio" loop>
+        <source src="javolim.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
         const poruka = `Nadam se da si slobodna sredinom Oktobra. Voleo bih da odemo do Beča. Biće tamo i Jakov tih dana. Ponesi osmeh. Za sve ostalo ćemo lako.`;
         
-        const karakteri = poruka.split(""); // Rastavljanje na pojedinačne karaktere (slova, razmake, tačke...)
+        const karakteri = poruka.split("");
         const tekstElement = document.getElementById("tekst");
         let index = 0;
-        let pauzaIzmedjuKaraktera = 180; // 180 milisekundi između slova (sporije otkucavanje)
-        let pauzaNaKraju = 7000; // 7 sekundi pauze na kraju
+        let pauzaIzmedjuKaraktera = 180;
+        let pauzaNaKraju = 7000;
         
-        let treperi = null; // Za trepereći kursor
-        
+        let treperi = null;
+
         function dodajKursor() {
-            // Ako već postoji kursor, ukloni ga
-            if (treperi) {
-                treperi.remove();
-            }
-            // Dodaj novi kursor
+            if (treperi) treperi.remove();
             treperi = document.createElement("span");
             treperi.className = "cursor";
             tekstElement.appendChild(treperi);
         }
-        
+
         function ukloniKursor() {
             if (treperi) {
                 treperi.remove();
                 treperi = null;
             }
         }
-        
-        function ocistiTekst() {
-            tekstElement.textContent = "";
-            ukloniKursor();
-        }
-        
+
         function prikaziSlovoPoSlovo() {
             if (index < karakteri.length) {
-                // Dodaj trenutno slovo u tekst
                 tekstElement.textContent += karakteri[index];
                 index++;
-                
-                // Kursor uvek stoji na kraju trenutnog teksta
                 ukloniKursor();
                 dodajKursor();
-                
                 setTimeout(prikaziSlovoPoSlovo, pauzaIzmedjuKaraktera);
             } else {
-                // Kada dođe do kraja teksta
-                ukloniKursor(); // Ukloni kursor
-                
-                // Sačekaj 7 sekundi pa kreni ispočetka
+                ukloniKursor();
                 setTimeout(() => {
-                    ocistiTekst();
+                    tekstElement.textContent = "";
                     index = 0;
-                    dodajKursor(); // Dodaj kursor na početak
+                    dodajKursor();
                     prikaziSlovoPoSlovo();
                 }, pauzaNaKraju);
             }
         }
-        
-        // Dodaj početni kursor i započni prikazivanje
-        dodajKursor();
-        setTimeout(prikaziSlovoPoSlovo, 800);
+
+        // === AUTOMATSKO PUŠTANJE MUZIKE ===
+        const audio = document.getElementById("audio");
+
+        function pokreniMuziku() {
+            audio.currentTime = 69;   // kreće od 69. sekunde
+            audio.play().catch(err => {
+                console.log("Autoplay blokiran:", err);
+            });
+        }
+
+        // Pokušaj da pusti muziku odmah
+        window.addEventListener('load', () => {
+            dodajKursor();
+            setTimeout(prikaziSlovoPoSlovo, 800);
+            
+            // Automatsko puštanje
+            pokreniMuziku();
+            
+            // Ako browser blokira autoplay, pusti kad korisnik klikne bilo gde
+            document.body.addEventListener('click', () => {
+                if (audio.paused) {
+                    pokreniMuziku();
+                }
+            }, { once: true });
+        });
     </script>
 </body>
 </html>
