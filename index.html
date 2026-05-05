@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beč Oktobar</title>
+    <title>Ajmo-Ajde</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&display=swap');
 
@@ -55,28 +55,26 @@
             vertical-align: middle;
         }
         
-        /* Stil za dugme */
-        .music-btn {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            border: 2px solid white;
-            border-radius: 50px;
-            padding: 12px 28px;
+        .muzika-dugme {
+            margin-top: 35px;
+            padding: 14px 32px;
             font-size: 1.5rem;
             font-family: 'Dancing Script', cursive;
             font-weight: 600;
-            color: white;
+            background: white;
+            color: #d63384;
+            border: none;
+            border-radius: 50px;
             cursor: pointer;
-            margin-top: 25px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+            transition: all 0.3s;
         }
         
-        .music-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: scale(1.05);
+        .muzika-dugme:hover {
+            transform: scale(1.08);
+            background: #ffe4f0;
         }
-        
+
         @keyframes blink {
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0; }
@@ -96,11 +94,18 @@
         <p id="tekst"></p>
         
         <!-- Dugme: Kofer + Ajde + Auto -->
-        <button class="music-btn" id="musicBtn">🧳 Ajde 🚗</button>
+        <button class="muzika-dugme" onclick="pokreniMuziku()">
+            🧳 Ajde 🚗
+        </button>
     </div>
 
+    <!-- Audio player -->
+    <audio id="audio" loop>
+        <source src="javolim.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
-        // Tekst koji se ispisuje slovo po slovo
+        // IZMJENJEN TEKST
         const poruka = `Ajmo do Beča sredinom Oktobra. Biće tamo i Jakov tih dana. Ponesi osmeh. Za sve ostalo ćemo lako.`;
         
         const karakteri = poruka.split("");
@@ -108,74 +113,36 @@
         let index = 0;
         let pauzaIzmedjuKaraktera = 180;
         let pauzaNaKraju = 7000;
-        
         let treperi = null;
-        
-        // ---------- MUZIKA U POZADINI ----------
-        // Kreiramo audio element
-        const audio = new Audio();
-        // Postavljamo da se muzička datoteka učitava (ZAMIJENI LINK SA SVOJOM MP3 DATOTEKOM!)
-        audio.src = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"; // PRIMJER - zamijeni sa svojom pjesmom
-        audio.loop = true; // Ponavljanje pjesme
-        audio.volume = 0.5; // Jačina zvuka (0.0 - 1.0)
-        
-        let musicPlaying = false;
-        const musicBtn = document.getElementById("musicBtn");
-        
-        // Funkcija za pokretanje muzike (mora biti pokrenuta korisničkim klikom)
-        function playMusic() {
-            if (!musicPlaying) {
-                audio.play().then(() => {
-                    musicPlaying = true;
-                    musicBtn.style.opacity = "0.8";
-                }).catch(error => {
-                    console.log("Greška pri reprodukciji:", error);
-                });
-            } else {
-                audio.pause();
-                musicPlaying = false;
-                musicBtn.style.opacity = "1";
-            }
-        }
-        
-        // Klik na dugme pokreće muziku
-        musicBtn.addEventListener("click", playMusic);
-        // ---------- KRAJ MUZIKE ----------
-        
-        // Funkcije za kursor i ispis teksta
+
         function dodajKursor() {
-            if (treperi) {
-                treperi.remove();
-            }
+            if (treperi) treperi.remove();
             treperi = document.createElement("span");
             treperi.className = "cursor";
             tekstElement.appendChild(treperi);
         }
-        
+
         function ukloniKursor() {
             if (treperi) {
                 treperi.remove();
                 treperi = null;
             }
         }
-        
+
         function ocistiTekst() {
             tekstElement.textContent = "";
             ukloniKursor();
         }
-        
+
         function prikaziSlovoPoSlovo() {
             if (index < karakteri.length) {
                 tekstElement.textContent += karakteri[index];
                 index++;
-                
                 ukloniKursor();
                 dodajKursor();
-                
                 setTimeout(prikaziSlovoPoSlovo, pauzaIzmedjuKaraktera);
             } else {
                 ukloniKursor();
-                
                 setTimeout(() => {
                     ocistiTekst();
                     index = 0;
@@ -184,9 +151,20 @@
                 }, pauzaNaKraju);
             }
         }
-        
-        dodajKursor();
-        setTimeout(prikaziSlovoPoSlovo, 800);
+
+        // === FUNKCIJA ZA MUZIKU ===
+        const audio = document.getElementById("audio");
+
+        function pokreniMuziku() {
+            audio.currentTime = 0;     // kreće OD POČETKA
+            audio.play();
+        }
+
+        // Pokretanje teksta
+        window.addEventListener('load', () => {
+            dodajKursor();
+            setTimeout(prikaziSlovoPoSlovo, 800);
+        });
     </script>
 </body>
 </html>
