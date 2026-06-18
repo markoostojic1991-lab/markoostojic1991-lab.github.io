@@ -6,165 +6,288 @@
     <title>Ajmo-Ajde</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&display=swap');
-
-        body {
-            margin: 0;
-            height: 100vh;
-            background: linear-gradient(135deg, #ffb6c1, #ff69b4);
-            font-family: 'Dancing Script', cursive;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
+        
+        body {            
+            margin: 0;            
+            height: 100vh;            
+            background: linear-gradient(135deg, #ffb6c1, #ff69b4);            
+            font-family: 'Dancing Script', cursive;            
+            display: flex;            
+            align-items: center;            
+            justify-content: center;            
+            overflow: hidden;        
+        }                
+        
+        .container {            
+            text-align: center;            
+            max-width: 85%;            
+            padding: 40px 20px;        
+        }                
+        
+        h1 {             
+            color: white;             
+            font-size: 3.2rem;             
+            margin-bottom: 20px;             
+            text-shadow: 0 3px 10px rgba(0,0,0,0.25);         
+        }                
+        
+        #tekst {             
+            color: white;             
+            font-size: 2.05rem;             
+            line-height: 1.5;             
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);             
+            min-height: 200px;        
+        }                
+        
+        .srce {             
+            font-size: 4.5rem;             
+            margin: 25px 0;             
+            animation: pulsiraj 2s infinite;         
+        }                
+        
+        .cursor {            
+            display: inline-block;            
+            width: 3px;            
+            height: 2.05rem;            
+            background-color: white;            
+            margin-left: 5px;            
+            animation: blink 1s infinite;            
+            vertical-align: middle;        
+        }                
+        
+        .muzika-dugme-wrapper {            
+            position: relative;            
+            display: inline-block;        
+        }                
+        
+        .muzika-dugme {            
+            margin-top: 35px;            
+            padding: 14px 32px;            
+            font-size: 1.5rem;            
+            font-family: 'Dancing Script', cursive;            
+            font-weight: 600;            
+            background: white;            
+            color: #d63384;            
+            border: none;            
+            border-radius: 50px;            
+            cursor: pointer;            
+            box-shadow: 0 5px 15px rgba(0,0,0,0.25);            
+            transition: all 0.3s;            
+            position: relative;            
+            z-index: 2;        
+        }                
+        
+        .muzika-dugme:hover {            
+            transform: scale(1.08);            
+            background: #ffe4f0;        
+        }                
+        
+        .note {            
+            position: absolute;            
+            font-size: 1.8rem;            
+            pointer-events: none;            
+            z-index: 10;            
+            animation: floatUp 2s ease-out forwards;        
+        }                
+        
+        @keyframes floatUp {            
+            0% {                
+                opacity: 1;                
+                transform: translateY(0) rotate(0deg);            
+            }            
+            100% {                
+                opacity: 0;                
+                transform: translateY(-120px) rotate(20deg);            
+            }        
+        }                
+        
+        .muzika-dugme.pulse {            
+            animation: pulseGlow 1.5s ease-in-out infinite;        
+        }                
+        
+        @keyframes pulseGlow {            
+            0% {                
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);                
+                transform: scale(1);            
+            }            
+            70% {                
+                box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);                
+                transform: scale(1.05);            
+            }            
+            100% {                
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);                
+                transform: scale(1);            
+            }        
         }
         
-        .container {
-            text-align: center;
-            max-width: 85%;
-            padding: 40px 20px;
+        @keyframes blink {            
+            0%, 50% { opacity: 1; }            
+            51%, 100% { opacity: 0; }        
         }
         
-        h1 { 
-            color: white; 
-            font-size: 3.2rem; 
-            margin-bottom: 20px; 
-            text-shadow: 0 3px 10px rgba(0,0,0,0.25); 
-        }
-        
-        #tekst { 
-            color: white; 
-            font-size: 2.05rem; 
-            line-height: 1.5; 
-            text-shadow: 0 2px 8px rgba(0,0,0,0.2); 
-            min-height: 200px;
-        }
-        
-        .srce { 
-            font-size: 4.5rem; 
-            margin: 25px 0; 
-            animation: pulsiraj 2s infinite; 
-        }
-        
-        .cursor {
-            display: inline-block;
-            width: 3px;
-            height: 2.05rem;
-            background-color: white;
-            margin-left: 5px;
-            animation: blink 1s infinite;
-            vertical-align: middle;
-        }
-        
-        .muzika-dugme {
-            margin-top: 35px;
-            padding: 14px 32px;
-            font-size: 1.5rem;
-            font-family: 'Dancing Script', cursive;
-            font-weight: 600;
-            background: white;
-            color: #d63384;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.25);
-            transition: all 0.3s;
-        }
-        
-        .muzika-dugme:hover {
-            transform: scale(1.08);
-            background: #ffe4f0;
-        }
-
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        @keyframes pulsiraj {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.18); }
-            100% { transform: scale(1); }
-        }
+        @keyframes pulsiraj {            
+            0% { transform: scale(1); }            
+            50% { transform: scale(1.18); }            
+            100% { transform: scale(1); }        
+        }    
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Ajmo...</h1>
-        <div class="srce">💗</div>
-        <p id="tekst"></p>
+<body>    
+    <div class="container">        
+        <h1>Ajmo...</h1>        
+        <div class="srce">💗</div>        
+        <p id="tekst"></p>                
         
-        <!-- Dugme: Kofer + Ajde + Auto -->
-        <button class="muzika-dugme" onclick="pokreniMuziku()">
-            🧳 Ajde 🚗
-        </button>
+        <!-- Dugme sa wrapperom za note -->        
+        <div class="muzika-dugme-wrapper">            
+            <button class="muzika-dugme pulse" id="musicBtn">                
+                🧳 Ajde 🚗            
+            </button>        
+        </div>    
     </div>
+    
+    <!-- Audio player -->    
+    <audio id="audio" loop></audio>
 
-    <!-- Audio player -->
-    <audio id="audio" loop>
-        <source src="javolim.mp3" type="audio/mpeg">
-    </audio>
+    <script>        
+        // TEKST KOJI SE ISPISUJE        
+        const poruka = `Ajmo do Beča sredinom Oktobra. Biće tamo i ... tih dana. Ponesi osmeh. Za sve ostalo ćemo lako.`;                
+        const karakteri = poruka.split("");        
+        const tekstElement = document.getElementById("tekst");        
+        let index = 0;        
+        let pauzaIzmedjuKaraktera = 180;        
+        let pauzaNaKraju = 7000;        
+        let treperi = null;        
+        let tekstAktivan = false; 
 
-    <script>
-        // IZMJENJEN TEKST
-        const poruka = `Ajmo do Beča sredinom Oktobra. Biće tamo i ... tih dana. Ponesi osmeh. Za sve ostalo ćemo lako.`;
-        
-        const karakteri = poruka.split("");
-        const tekstElement = document.getElementById("tekst");
-        let index = 0;
-        let pauzaIzmedjuKaraktera = 180;
-        let pauzaNaKraju = 7000;
-        let treperi = null;
+        // Sve ostale pesme koje će se mešati nasumično
+        const ostalePesme = [
+            "cetirilaste.mp3",
+            "jazacudaletim.mp3",
+            "meri.mp3",
+            "namestumom.mp3",
+            "necesspavati.mp3",
+            "poljeruza.mp3",
+            "raj.mp3",
+            "stolzadvoje.mp3",
+            "voljelabito.mp3"
+        ];
 
-        function dodajKursor() {
-            if (treperi) treperi.remove();
-            treperi = document.createElement("span");
-            treperi.className = "cursor";
-            tekstElement.appendChild(treperi);
-        }
-
-        function ukloniKursor() {
-            if (treperi) {
-                treperi.remove();
-                treperi = null;
+        // Funkcija za nasumično mešanje niza (Fisher-Yates algoritam)
+        function promesajNiz(niz) {
+            for (let i = niz.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [niz[i], niz[j]] = [niz[j], niz[i]];
             }
+            return niz;
         }
 
-        function ocistiTekst() {
-            tekstElement.textContent = "";
-            ukloniKursor();
-        }
-
-        function prikaziSlovoPoSlovo() {
-            if (index < karakteri.length) {
-                tekstElement.textContent += karakteri[index];
-                index++;
-                ukloniKursor();
-                dodajKursor();
-                setTimeout(prikaziSlovoPoSlovo, pauzaIzmedjuKaraktera);
-            } else {
-                ukloniKursor();
-                setTimeout(() => {
-                    ocistiTekst();
-                    index = 0;
-                    dodajKursor();
-                    prikaziSlovoPoSlovo();
-                }, pauzaNaKraju);
-            }
-        }
-
-        // === FUNKCIJA ZA MUZIKU ===
+        // Kreiramo konačnu listu: javolim.mp3 je uvek prva, a ostale su nasumično promešane
+        const listaPesama = ["javolim.mp3", ...promesajNiz(ostalePesme)];
+        let trenutnaPesmaIndex = 0;
+                
+        // Varijable za note        
+        let noteInterval = null;        
+        const btn = document.getElementById("musicBtn");
         const audio = document.getElementById("audio");
 
-        function pokreniMuziku() {
-            audio.currentTime = 0;     // kreće OD POČETKA
-            audio.play();
-        }
+        // Funkcija za kreiranje note        
+        function createNote() {            
+            const wrapper = document.querySelector('.muzika-dugme-wrapper');            
+            const note = document.createElement('div');            
+            note.className = 'note';                        
+            const notes = ['🎵', '🎶', '♪', '♫', '🎤', '🎸'];            
+            const randomNote = notes[Math.floor(Math.random() * notes.length)];            
+            note.textContent = randomNote;                        
+            const randomX = (Math.random() - 0.5) * 60;            
+            note.style.left = `calc(50% + ${randomX}px)`;            
+            note.style.bottom = '0px';                        
+            const randomSize = 1.2 + Math.random() * 1;            
+            note.style.fontSize = `${randomSize}rem`;                        
+            wrapper.appendChild(note);                        
+            setTimeout(() => { note.remove(); }, 2000);        
+        }                
+        
+        function startNoteAnimation() {            
+            if (noteInterval) clearInterval(noteInterval);            
+            noteInterval = setInterval(createNote, 400);        
+        }                
 
-        // Pokretanje teksta
-        window.addEventListener('load', () => {
-            dodajKursor();
-            setTimeout(prikaziSlovoPoSlovo, 800);
-        });
+        // Funkcije za kursor        
+        function dodajKursor() {            
+            if (treperi) treperi.remove();            
+            treperi = document.createElement("span");            
+            treperi.className = "cursor";            
+            tekstElement.appendChild(treperi);        
+        }
+        
+        function ukloniKursor() {            
+            if (treperi) {                
+                treperi.remove();                
+                treperi = null;            
+            }        
+        }
+        
+        function ocistiTekst() {            
+            tekstElement.textContent = "";            
+            ukloniKursor();        
+        }
+        
+        function prikaziSlovoPoSlovo() {            
+            if (index < karakteri.length) {                
+                tekstElement.textContent += karakteri[index];                
+                index++;                
+                ukloniKursor();                
+                dodajKursor();                
+                setTimeout(prikaziSlovoPoSlovo, pauzaIzmedjuKaraktera);            
+            } else {                
+                ukloniKursor();                                
+                setTimeout(() => {                    
+                    ocistiTekst();                    
+                    index = 0;                    
+                    dodajKursor();                    
+                    prikaziSlovoPoSlovo();                  
+                }, pauzaNaKraju);            
+            }        
+        }                
+        
+        // Glavna funkcija na klik dugmeta
+        function klikNaDugme() {            
+            // Ukloni pulsiranje dugmeta
+            btn.classList.remove('pulse');                        
+            
+            // Mali vizuelni klik efekat
+            btn.style.transform = 'scale(0.95)';            
+            setTimeout(() => { btn.style.transform = ''; }, 200);                        
+            
+            // Pokretanje teksta (somo pri PRVOM kliku)
+            if (!tekstAktivan) {                
+                tekstAktivan = true;                
+                ocistiTekst();                
+                dodajKursor();                
+                prikaziSlovoPoSlovo();            
+            }            
+            
+            // Puštanje muzike iz promešane liste
+            audio.src = listaPesama[trenutnaPesmaIndex];
+            audio.currentTime = 0;            
+            audio.play().catch(err => console.log("Audio play error:", err));
+            
+            // Pomera indeks na sledeću pesmu za naredni klik (ide u krug)
+            trenutnaPesmaIndex = (trenutnaPesmaIndex + 1) % listaPesama.length;
+            
+            // Pokreće/osigurava animaciju nota
+            startNoteAnimation();
+        }
+        
+        btn.addEventListener("click", klikNaDugme);
+        
+        // Pokretanje animacije nota pri učitavanju stranice
+        window.addEventListener('load', () => {            
+            setTimeout(() => {                
+                startNoteAnimation();            
+            }, 1000);        
+        });    
     </script>
 </body>
 </html>
