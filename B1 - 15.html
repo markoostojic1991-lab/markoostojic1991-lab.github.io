@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nemački → Srpski | Kviz 4</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #b24592 0%, #f15f79 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .quiz-container {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 650px;
+    padding: 30px;
+  }
+  h1 {
+    text-align: center;
+    color: #b24592;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #777;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+  .progress-bar {
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #b24592, #f15f79);
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+  .stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 25px;
+  }
+  .question-box {
+    background: #fdf2f6;
+    border-radius: 12px;
+    padding: 25px 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    border-left: 5px solid #b24592;
+  }
+  .question-label {
+    font-size: 0.8rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .question-word {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #b24592;
+  }
+  .question-extra {
+    font-size: 0.9rem;
+    color: #999;
+    margin-top: 6px;
+    font-style: italic;
+  }
+  .options {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .option-btn {
+    padding: 14px 18px;
+    font-size: 1rem;
+    border: 2px solid #f0d0dd;
+    background: #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    color: #333;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: #b24592;
+    background: #fceef3;
+    transform: translateX(4px);
+  }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct {
+    background: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+    font-weight: 600;
+  }
+  .option-btn.wrong {
+    background: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+  }
+  .option-btn.show-correct {
+    background: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+    font-weight: 600;
+  }
+  .feedback {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    min-height: 28px;
+    margin-bottom: 15px;
+  }
+  .feedback.correct { color: #28a745; }
+  .feedback.wrong { color: #dc3545; }
+  .next-btn, .restart-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: linear-gradient(90deg, #b24592, #f15f79);
+    color: #fff;
+    transition: opacity 0.2s;
+  }
+  .next-btn:hover, .restart-btn:hover { opacity: 0.9; }
+  .next-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .result-screen { text-align: center; padding: 20px 0; }
+  .result-screen h2 { color: #b24592; margin-bottom: 15px; }
+  .score-circle {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #b24592, #f15f79);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  .score-circle small { font-size: 0.9rem; font-weight: 400; opacity: 0.9; }
+  .result-msg { font-size: 1.1rem; color: #555; margin-bottom: 25px; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="quiz-container">
+  <h1>🇩🇪 Nemački → Srpski (Kviz 4)</h1>
+  <p class="subtitle">Izaberi tačan prevod</p>
+
+  <div id="quiz-view">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="stats">
+      <span id="questionCounter">Pitanje 1 / 34</span>
+      <span id="scoreDisplay">Bodovi: 0</span>
+    </div>
+
+    <div class="question-box">
+      <div class="question-label">Prevedi</div>
+      <div class="question-word" id="questionWord">—</div>
+      <div class="question-extra" id="questionExtra"></div>
+    </div>
+
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" disabled>Dalje →</button>
+  </div>
+
+  <div id="result-view" class="result-screen hidden">
+    <h2>Kviz završen! 🎉</h2>
+    <div class="score-circle">
+      <span id="finalScore">0</span>
+      <small>od 34</small>
+    </div>
+    <p class="result-msg" id="resultMsg"></p>
+    <button class="restart-btn" id="restartBtn">🔄 Pokušaj ponovo</button>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+  { q: "Betreuung die", a: "briga / čuvanje / nadzor" },
+  { q: "betreuen, hat betreut", a: "brinuti o / nadgledati" },
+  { q: "Dichter der, -", a: "pesnik" },
+  { q: "Industrie die, -n", a: "industrija" },
+  { q: "Mittel das, -", a: "sredstvo" },
+  { q: "Kommunikationsmittel das, -", a: "komunikaciono sredstvo" },
+  { q: "Physik die", a: "fizika" },
+  { q: "Physiklehrer der, -", a: "nastavnik/profesor fizike" },
+  { q: "Präsident der, -en", a: "predsednik" },
+  { q: "Presse die", a: "štampa / pres" },
+  { q: "Pressemeldung die, -en", a: "saopštenje za javnost / vest u štampi" },
+  { q: "Recherche die, -n", a: "istraživanje (prikupljanje informacija)" },
+  { q: "Reporter der, -", a: "reporter / novinar" },
+  { q: "Rufnummer die, -n", a: "broj telefona" },
+  { q: "CH: Telefonnummer die, -n", a: "(Švajcarski nemački) broj telefona" },
+  { q: "Schicht(arbeit) die, -en", a: "smena / rad u smenama" },
+  { q: "Schrift die, -en", a: "pismo / rukopis / font" },
+  { q: "in Wort und Schrift", a: "u reči i pismu (usmeno i pismeno)" },
+  { q: "Sozialarbeiter der, -", a: "socijalni radnik" },
+  { q: "Unternehmen das, -", a: "preduzeće / kompanija" },
+  { q: "Unternehmer der, -", a: "preduzetnik" },
+  { q: "Wissenschaftler der, -", a: "naučnik" },
+  { q: "A/CH: auch: Wissenschafter der, -", a: "(Austrijski/Švajcarski nemački) naučnik" },
+  { q: "an·nehmen, du nimmst an, er nimmt an, hat angenommen", a: "prihvatiti / pretpostaviti" },
+  { q: "ein·stellen, hat eingestellt", a: "zaposliti / podesiti (uređaj) / obustaviti" },
+  { q: "entwickeln, hat entwickelt", a: "razviti / razvijati" },
+  { q: "übertragen, du überträgst, er überträgt, hat übertragen", a: "preneti / emitovati" },
+  { q: "veröffentlichen, hat veröffentlicht", a: "objaviti" },
+  { q: "allgemein", a: "opšti / opšte" },
+  { q: "bisher", a: "do sada" },
+  { q: "einzeln", a: "pojedinačan / pojedinačno" },
+  { q: "sicher", a: "siguran / sigurno" },
+  { q: "üblich", a: "uobičajen / uobičajeno" },
+  { q: "Abschnitt der, -e", a: "odeljak / pasus / sektor" },
+  { q: "Acht geben", a: "paziti / obratiti pažnju" },
+  { q: "A: aufpassen", a: "(Austrijski) paziti" },
+  { q: "CH: auch: aufpassen", a: "(Švajcarski) takođe: paziti" },
+  { q: "Fleck der, -e", a: "mrlja / fleka" },
+  { q: "Jeans die (Pl.)", a: "farmerke (množina)" },
+  { q: "Konto das, Konten", a: "račun (u banci)" },
+  { q: "an·haben", a: "imati na sebi (odeću) / nositi" },
+  { q: "nicht nur ... sondern auch", a: "ne samo ... nego i" },
+  { q: "sowohl ... als auch", a: "kako ... tako i / i ... i" }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildQuiz() {
+  return shuffle(QUESTIONS).map(item => {
+    const wrongPool = QUESTIONS.filter(x => x.a !== item.a).map(x => x.a);
+    const wrongs = shuffle(wrongPool).slice(0, 3);
+    const options = shuffle([item.a, ...wrongs]);
+    return { question: item.q, correct: item.a, options };
+  });
+}
+
+let quiz = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+
+const els = {
+  quizView: document.getElementById('quiz-view'),
+  resultView: document.getElementById('result-view'),
+  progressFill: document.getElementById('progressFill'),
+  questionCounter: document.getElementById('questionCounter'),
+  scoreDisplay: document.getElementById('scoreDisplay'),
+  questionWord: document.getElementById('questionWord'),
+  questionExtra: document.getElementById('questionExtra'),
+  options: document.getElementById('options'),
+  feedback: document.getElementById('feedback'),
+  nextBtn: document.getElementById('nextBtn'),
+  finalScore: document.getElementById('finalScore'),
+  resultMsg: document.getElementById('resultMsg'),
+  restartBtn: document.getElementById('restartBtn')
+};
+
+function startQuiz() {
+  quiz = buildQuiz();
+  currentIndex = 0;
+  score = 0;
+  answered = false;
+  els.resultView.classList.add('hidden');
+  els.quizView.classList.remove('hidden');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  const item = quiz[currentIndex];
+
+  els.progressFill.style.width = ((currentIndex) / quiz.length * 100) + '%';
+  els.questionCounter.textContent = `Pitanje ${currentIndex + 1} / ${quiz.length}`;
+  els.scoreDisplay.textContent = `Bodovi: ${score}`;
+  els.questionWord.textContent = item.question;
+  els.questionExtra.textContent = '';
+  els.feedback.textContent = '';
+  els.feedback.className = 'feedback';
+  els.nextBtn.disabled = true;
+  els.nextBtn.textContent = currentIndex === quiz.length - 1 ? 'Završi ✓' : 'Dalje →';
+
+  els.options.innerHTML = '';
+  item.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => selectAnswer(btn, opt, item.correct));
+    els.options.appendChild(btn);
+  });
+}
+
+function selectAnswer(btn, chosen, correct) {
+  if (answered) return;
+  answered = true;
+
+  const allBtns = els.options.querySelectorAll('.option-btn');
+  allBtns.forEach(b => {
+    b.disabled = true;
+    if (b.textContent === correct) b.classList.add('show-correct');
+  });
+
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    btn.classList.remove('show-correct');
+    score++;
+    els.feedback.textContent = '✓ Tačno!';
+    els.feedback.className = 'feedback correct';
+  } else {
+    btn.classList.add('wrong');
+    els.feedback.textContent = `✗ Netačno. Tačan odgovor: ${correct}`;
+    els.feedback.className = 'feedback wrong';
+  }
+
+  els.scoreDisplay.textContent = `Bodovi: ${score}`;
+  els.nextBtn.disabled = false;
+}
+
+function nextQuestion() {
+  if (currentIndex < quiz.length - 1) {
+    currentIndex++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  els.progressFill.style.width = '100%';
+  els.quizView.classList.add('hidden');
+  els.resultView.classList.remove('hidden');
+  els.finalScore.textContent = score;
+
+  const pct = score / quiz.length;
+  let msg;
+  if (pct === 1) msg = 'Savršeno! Odlično poznaješ ovu leksiku! 🏆';
+  else if (pct >= 0.8) msg = 'Vrlo dobro! Samo još malo vežbe. 💪';
+  else if (pct >= 0.6) msg = 'Solidno! Ponovi teže reči i biće bolje. 📚';
+  else if (pct >= 0.4) msg = 'Nije loše, ali vredi ponoviti listu. 🔁';
+  else msg = 'Potrebno je još vežbe. Ne odustaj! 🌱';
+  els.resultMsg.textContent = msg;
+}
+
+els.nextBtn.addEventListener('click', nextQuestion);
+els.restartBtn.addEventListener('click', startQuiz);
+
+startQuiz();
+</script>
+</body>
+</html>
