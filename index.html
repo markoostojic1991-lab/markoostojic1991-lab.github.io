@@ -3,149 +3,1862 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>B1 Kvizovi — Index</title>
+<title>Nemački kviz - kompletna baza reči (700+)</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #6a3093 100%);
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #1e2b3a, #2c3e4e);
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 20px;
+    color: #f2e9d0;
   }
   .container {
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 25px 70px rgba(0,0,0,0.35);
-    width: 100%;
-    max-width: 520px;
-    padding: 40px 35px;
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.06);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.08);
   }
   h1 {
-    text-align: center;
-    color: #1e3c72;
-    font-size: 1.8rem;
+    font-size: 1.9rem;
     margin-bottom: 8px;
-  }
-  .subtitle {
-    text-align: center;
-    color: #888;
-    font-size: 0.95rem;
-    margin-bottom: 30px;
-  }
-  .btn-list {
-    display: grid;
-    gap: 14px;
-  }
-  .quiz-btn {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 18px 22px;
-    font-size: 1.1rem;
+    gap: 12px;
+    color: #f2e9d0;
+    border-bottom: 2px solid rgba(217,179,130,0.25);
+    padding-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  h1 span {
+    background: #d9b382;
+    color: #1e2b3a;
+    font-size: 0.85rem;
     font-weight: 600;
-    color: #1e3c72;
-    background: #f4f7fb;
-    border: 2px solid #d0d7e2;
-    border-radius: 12px;
+    padding: 4px 14px;
+    border-radius: 30px;
+  }
+  .stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,0.3);
+    padding: 12px 20px;
+    border-radius: 40px;
+    margin: 18px 0;
+    font-size: 1rem;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .score {
+    background: #d9b382;
+    color: #1e2b3a;
+    padding: 4px 16px;
+    border-radius: 30px;
+    font-weight: 700;
+  }
+  .question {
+    background: rgba(255,255,255,0.05);
+    border-left: 6px solid #d9b382;
+    padding: 22px 24px;
+    border-radius: 18px;
+    font-size: 1.35rem;
+    font-weight: 500;
+    margin-bottom: 22px;
+    line-height: 1.4;
+    color: #fff5e6;
+    word-break: break-word;
+  }
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 600px) {
+    .options { grid-template-columns: 1fr; }
+    .question { font-size: 1.1rem; }
+    h1 { font-size: 1.4rem; }
+  }
+  .option {
+    background: rgba(255,255,255,0.07);
+    border: 1.5px solid rgba(217,179,130,0.3);
+    border-radius: 14px;
+    padding: 14px;
+    font-size: 1.05rem;
+    color: #e8eef3;
     cursor: pointer;
-    text-align: left;
-    transition: all 0.25s ease;
-    text-decoration: none;
+    transition: 0.15s;
+    text-align: center;
     font-family: inherit;
+    word-break: break-word;
   }
-  .quiz-btn:hover {
-    background: linear-gradient(90deg, #1e3c72, #2a5298);
-    color: #fff;
-    border-color: #1e3c72;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(30, 60, 114, 0.35);
+  .option:hover:not(.disabled) {
+    background: rgba(217,179,130,0.2);
+    border-color: #d9b382;
+    transform: scale(1.01);
   }
-  .quiz-btn:hover .icon {
-    background: rgba(255,255,255,0.2);
-    color: #fff;
+  .option.correct {
+    background: #3f8e5c;
+    border-color: #7ed49b;
+    color: white;
+    font-weight: 600;
   }
-  .icon {
+  .option.wrong {
+    background: #b2453a;
+    border-color: #e07b70;
+    color: white;
+  }
+  .option.disabled { pointer-events: none; opacity: 0.85; }
+  .feedback {
+    text-align: center;
+    font-size: 1.15rem;
+    padding: 14px;
+    border-radius: 30px;
+    background: rgba(0,0,0,0.3);
+    margin-bottom: 16px;
+    min-height: 52px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 42px;
-    height: 42px;
-    background: #e1e9f5;
-    border-radius: 10px;
-    font-size: 1.3rem;
-    transition: all 0.25s ease;
-    flex-shrink: 0;
   }
-  .arrow {
-    margin-left: auto;
+  .next {
+    width: 100%;
+    padding: 16px;
     font-size: 1.2rem;
-    opacity: 0.5;
-    transition: all 0.25s ease;
+    font-weight: 700;
+    background: #d9b382;
+    color: #1e2b3a;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-family: inherit;
   }
-  .quiz-btn:hover .arrow {
-    opacity: 1;
-    transform: translateX(4px);
+  .next:hover:not(:disabled) {
+    background: #e6c9a2;
+    transform: translateY(-2px);
   }
-  footer {
+  .next:disabled {
+    background: #7b8c9c;
+    color: #cfdde8;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .finish {
     text-align: center;
-    margin-top: 25px;
-    font-size: 0.8rem;
-    color: #aaa;
+    padding: 30px 10px;
+  }
+  .finish h2 {
+    font-size: 2.2rem;
+    margin-bottom: 16px;
+    color: #d9b382;
+  }
+  .finish p {
+    font-size: 1.4rem;
+    margin-bottom: 26px;
+    background: rgba(0,0,0,0.3);
+    padding: 16px;
+    border-radius: 30px;
+    display: inline-block;
+  }
+  .restart {
+    padding: 14px 36px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    background: #d9b382;
+    color: #1e2b3a;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-family: inherit;
+    margin-right: 8px;
+  }
+  .restart:hover { background: #e6c9a2; }
+  .hidden { display: none; }
+  .info {
+    text-align: center;
+    font-size: 0.9rem;
+    opacity: 0.75;
+    margin-top: 18px;
+  }
+  .level-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(217,179,130,0.3);
+    color: #f2e9d0;
+    margin-left: 8px;
+    vertical-align: middle;
   }
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>📚 B1 Kvizovi</h1>
-  <p class="subtitle">Izaberi kviz koji želiš da otvoriš</p>
+<div class="container" id="app">
 
-  <div class="btn-list">
-   <button class="quiz-btn" onclick="openQuiz('B1 - 13.html')">
-      <span class="icon">📝</span>
-      <span>B1 - 13</span>
-      <span class="arrow">→</span>
-    </button>
-   <button class="quiz-btn" onclick="openQuiz('B1 - 14.html')">
-      <span class="icon">📝</span>
-      <span>B1 - 14</span>
-      <span class="arrow">→</span>
-    </button> 
-   
-   <button class="quiz-btn" onclick="openQuiz('B1 - 15.html')">
-      <span class="icon">📝</span>
-      <span>B1 - 15</span>
-      <span class="arrow">→</span>
-    </button>
+  <div id="quizView">
+    <h1>🇩🇪 Nemački kviz <span id="totalInfo">kompletna baza</span></h1>
 
-    <button class="quiz-btn" onclick="openQuiz('B1 - 16.html')">
-      <span class="icon">📝</span>
-      <span>B1 - 16</span>
-      <span class="arrow">→</span>
-    </button>
+    <div class="stats">
+      <span id="questionCounter">Pitanje 1 / 20</span>
+      <span class="score">Poeni: <span id="scoreDisplay">0</span></span>
+    </div>
 
-    <button class="quiz-btn" onclick="openQuiz('B1 - 17.html')">
-      <span class="icon">📝</span>
-      <span>B1 - 17</span>
-      <span class="arrow">→</span>
-    </button>
-
-    <button class="quiz-btn" onclick="openQuiz('B1 - 18.html')">
-      <span class="icon">📝</span>
-      <span>B1 - 18</span>
-      <span class="arrow">→</span>
-    </button>
+    <div class="question" id="questionText">Učitavanje...</div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="feedback" id="feedback">Izaberi odgovor</div>
+    <button class="next" id="nextBtn" disabled>Sledeće pitanje →</button>
+    <div class="info">
+      Nasumično izabrano <span id="numQuestions">20</span> pitanja iz baze od
+      <span id="totalQuestions">0</span> reči / izraza
+    </div>
   </div>
 
-  <footer>Klikom na dugme otvara se kviz u novom tabu</footer>
+  <div id="finishView" class="finish hidden">
+    <h2>🎉 Kviz završen!</h2>
+    <p id="finalScore">Osvojili ste 0 / 20</p><br>
+    <button class="restart" id="restartBtn">🔄 Novi kviz</button>
+  </div>
+
 </div>
 
 <script>
-  function openQuiz(filename) {
-    window.open(filename, '_blank');
+/* =====================================================================
+   KOMPLETNA BAZA NEMAČKIH REČI IZ podaci.txt
+   Format: { q: "nemačka reč", c: "srpski prevod", w: ["pogrešan1", "pogrešan2", "pogrešan3"] }
+   ===================================================================== */
+const wordDatabase = [
+  // ============ POZDRAVI I OSNOVNE FRAZE ============
+  { q: "Guten Morgen", c: "dobro jutro", w: ["dobar dan", "laku noć", "dobro veče"] },
+  { q: "Guten Tag", c: "dobar dan", w: ["dobro jutro", "laku noć", "zdravo"] },
+  { q: "Guten Abend", c: "dobro veče", w: ["dobro jutro", "dobar dan", "laku noć"] },
+  { q: "Gute Nacht", c: "laku noć", w: ["dobro veče", "dobar dan", "dobro jutro"] },
+  { q: "Hallo", c: "zdravo / ćao", w: ["doviđenja", "hvala", "molim"] },
+  { q: "Tschüs", c: "ćao (pri rastanku)", w: ["zdravo", "dobar dan", "hvala"] },
+  { q: "Auf Wiedersehen", c: "doviđenja", w: ["zdravo", "dobro jutro", "laku noć"] },
+  { q: "Auf Wiederhören", c: "doviđenja (na telefonu)", w: ["doviđenja", "zdravo", "laku noć"] },
+  { q: "Bis später", c: "do kasnije", w: ["do sutra", "zbogom", "doviđenja"] },
+  { q: "später", c: "kasnije", w: ["ranije", "uskoro", "nikad"] },
+  { q: "bald", c: "uskoro", w: ["kasnije", "sada", "juče"] },
+  { q: "wie geht's?", c: "kako si?", w: ["gde si?", "šta radiš?", "kako se zoveš?"] },
+  { q: "Wie geht es dir?", c: "kako si? (ti)", w: ["kako ste?", "gde si?", "šta radiš?"] },
+  { q: "Wie geht es Ihnen?", c: "kako ste? (Vi)", w: ["kako si?", "gde ste?", "šta radite?"] },
+  { q: "Danke", c: "hvala", w: ["molim", "izvini", "zdravo"] },
+  { q: "Danke schön", c: "hvala lepo", w: ["molim lepo", "izvini", "nema na čemu"] },
+  { q: "Vielen Dank", c: "mnogo hvala", w: ["molim", "izvini", "nema na čemu"] },
+  { q: "bitte", c: "molim / nema na čemu", w: ["hvala", "izvini", "zdravo"] },
+  { q: "wie bitte?", c: "kako, molim?", w: ["šta?", "gde?", "kada?"] },
+  { q: "gerne", c: "rado", w: ["nerado", "možda", "nikako"] },
+  { q: "nichts zu danken", c: "nema na čemu", w: ["hvala lepo", "molim lepo", "izvini"] },
+  { q: "gern geschehen", c: "nema na čemu (rado učinjeno)", w: ["hvala lepo", "molim lepo", "izvini"] },
+  { q: "Entschuldigung", c: "izvinite", w: ["hvala", "molim", "zdravo"] },
+  { q: "Verzeihung", c: "oproštenje / izvinite", w: ["hvala", "molim", "zdravo"] },
+  { q: "Es tut mir leid", c: "žao mi je", w: ["drago mi je", "nema veze", "u redu je"] },
+  { q: "Keine Sorge", c: "nema brige", w: ["nema na čemu", "nema veze", "u redu je"] },
+  { q: "Mach nichts", c: "nema veze", w: ["nema brige", "nema na čemu", "u redu je"] },
+  { q: "Alles klar", c: "sve jasno / u redu", w: ["nema veze", "nema brige", "sve najbolje"] },
+  { q: "Alles ist in Ordnung", c: "sve je u redu", w: ["sve je jasno", "nema veze", "sve najbolje"] },
+  { q: "Schönen Tag noch!", c: "lep ostatak dana!", w: ["laku noć", "dobar dan", "prijatan dan"] },
+  { q: "Gleichfalls", c: "takođe / isto tako", w: ["različito", "nikako", "možda"] },
+  { q: "Ebenfalls", c: "isto tako", w: ["različito", "nikako", "možda"] },
+  { q: "Schönes Wochenende", c: "lep vikend", w: ["lep dan", "lepo veče", "lep odmor"] },
+  { q: "Guten Appetit", c: "prijatno (pred jelom)", w: ["nazdravlje", "dobar tek", "laku noć"] },
+  { q: "Mahlzeit", c: "prijatno (pred jelom)", w: ["nazdravlje", "dobar tek", "laku noć"] },
+  { q: "Gesundheit!", c: "nazdravlje!", w: ["živeli!", "prijatno!", "dobar dan!"] },
+  { q: "Prost!", c: "živeli!", w: ["nazdravlje!", "prijatno!", "dobar dan!"] },
+  { q: "Zum Wohl!", c: "živeli! / nazdravlje!", w: ["prijatno!", "dobar dan!", "laku noć!"] },
+  { q: "Gute Reise!", c: "srećan put!", w: ["dobrodošli!", "prijatan boravak!", "srećno!"] },
+  { q: "Gute Besserung!", c: "brzo ozdravljenje!", w: ["srećan put!", "srećno!", "prijatno!"] },
+  { q: "Viel Spaß!", c: "lep provod!", w: ["srećan put!", "prijatno!", "srećno!"] },
+  { q: "Viel Glück!", c: "puno sreće!", w: ["lep provod!", "srećan put!", "prijatno!"] },
+  { q: "Herzlichen Glückwunsch!", c: "čestitam!", w: ["srećan put!", "prijatno!", "srećno!"] },
+  { q: "Frohe Ostern", c: "srećan Uskrs", w: ["srećan Božić", "srećna Nova godina", "srećan rođendan"] },
+  { q: "Freut mich!", c: "drago mi je!", w: ["žao mi je!", "nema veze!", "srećno!"] },
+  { q: "Willkommen", c: "dobrodošli", w: ["doviđenja", "zbogom", "prijatno"] },
+
+  // ============ LIČNE ZAMENICE I GLAGOL SEIN ============
+  { q: "ich", c: "ja", w: ["ti", "on", "mi"] },
+  { q: "du", c: "ti", w: ["ja", "on", "vi"] },
+  { q: "er", c: "on", w: ["ona", "ono", "mi"] },
+  { q: "sie (jednina)", c: "ona", w: ["on", "ono", "oni"] },
+  { q: "es", c: "ono", w: ["on", "ona", "mi"] },
+  { q: "wir", c: "mi", w: ["vi", "oni", "ja"] },
+  { q: "ihr", c: "vi", w: ["mi", "oni", "ja"] },
+  { q: "sie (množina)", c: "oni / one / ona", w: ["mi", "vi", "ja"] },
+  { q: "Sie (učtivo)", c: "Vi", w: ["ti", "on", "mi"] },
+  { q: "ich bin", c: "ja sam", w: ["ti si", "on je", "mi smo"] },
+  { q: "du bist", c: "ti si", w: ["ja sam", "on je", "vi ste"] },
+  { q: "er ist", c: "on je", w: ["ona je", "ono je", "ja sam"] },
+  { q: "wir sind", c: "mi smo", w: ["vi ste", "oni su", "ja sam"] },
+  { q: "ihr seid", c: "vi ste", w: ["mi smo", "oni su", "ja sam"] },
+  { q: "sie sind", c: "oni su", w: ["mi smo", "vi ste", "ja sam"] },
+
+  // ============ IMENICE - ROD ============
+  { q: "der Morgen", c: "jutro", w: ["veče", "noć", "podne"] },
+  { q: "der Vormittag", c: "pre podne", w: ["popodne", "jutro", "veče"] },
+  { q: "der Mittag", c: "podne", w: ["ponoć", "jutro", "veče"] },
+  { q: "der Nachmittag", c: "popodne", w: ["pre podne", "veče", "jutro"] },
+  { q: "der Abend", c: "veče", w: ["jutro", "podne", "noć"] },
+  { q: "die Nacht", c: "noć", w: ["jutro", "dan", "veče"] },
+  { q: "die Mitternacht", c: "ponoć", w: ["podne", "jutro", "veče"] },
+  { q: "der Tag", c: "dan", w: ["noć", "jutro", "veče"] },
+  { q: "die Woche", c: "nedelja", w: ["mesec", "godina", "dan"] },
+  { q: "der Monat", c: "mesec", w: ["nedelja", "godina", "dan"] },
+  { q: "das Jahr", c: "godina", w: ["mesec", "nedelja", "dan"] },
+  { q: "die Stunde", c: "sat", w: ["minut", "sekund", "dan"] },
+  { q: "die Minute", c: "minut", w: ["sat", "sekund", "dan"] },
+  { q: "die Zeit", c: "vreme", w: ["sat", "dan", "godina"] },
+  { q: "heute", c: "danas", w: ["juče", "sutra", "prekjuče"] },
+  { q: "gestern", c: "juče", w: ["danas", "sutra", "prekjuče"] },
+  { q: "morgen", c: "sutra", w: ["danas", "juče", "prekjuče"] },
+  { q: "vorgestern", c: "prekjuče", w: ["juče", "danas", "sutra"] },
+  { q: "übermorgen", c: "prekosutra", w: ["sutra", "danas", "juče"] },
+
+  // ============ DANI U NEDELJI ============
+  { q: "Montag", c: "ponedeljak", w: ["utorak", "sreda", "četvrtak"] },
+  { q: "Dienstag", c: "utorak", w: ["ponedeljak", "sreda", "četvrtak"] },
+  { q: "Mittwoch", c: "sreda", w: ["ponedeljak", "utorak", "četvrtak"] },
+  { q: "Donnerstag", c: "četvrtak", w: ["sreda", "petak", "subota"] },
+  { q: "Freitag", c: "petak", w: ["četvrtak", "subota", "nedelja"] },
+  { q: "Samstag", c: "subota", w: ["petak", "nedelja", "ponedeljak"] },
+  { q: "Sonntag", c: "nedelja", w: ["subota", "petak", "ponedeljak"] },
+
+  // ============ MESECI ============
+  { q: "Januar", c: "januar", w: ["februar", "mart", "decembar"] },
+  { q: "Februar", c: "februar", w: ["januar", "mart", "april"] },
+  { q: "März", c: "mart", w: ["februar", "april", "maj"] },
+  { q: "April", c: "april", w: ["mart", "maj", "jun"] },
+  { q: "Mai", c: "maj", w: ["april", "jun", "jul"] },
+  { q: "Juni", c: "jun", w: ["maj", "jul", "avgust"] },
+  { q: "Juli", c: "jul", w: ["jun", "avgust", "septembar"] },
+  { q: "August", c: "avgust", w: ["jul", "septembar", "oktobar"] },
+  { q: "September", c: "septembar", w: ["avgust", "oktobar", "novembar"] },
+  { q: "Oktober", c: "oktobar", w: ["septembar", "novembar", "decembar"] },
+  { q: "November", c: "novembar", w: ["oktobar", "decembar", "januar"] },
+  { q: "Dezember", c: "decembar", w: ["novembar", "januar", "februar"] },
+
+  // ============ GODIŠNJA DOBA ============
+  { q: "der Frühling", c: "proleće", w: ["leto", "jesen", "zima"] },
+  { q: "der Sommer", c: "leto", w: ["proleće", "jesen", "zima"] },
+  { q: "der Herbst", c: "jesen", w: ["proleće", "leto", "zima"] },
+  { q: "der Winter", c: "zima", w: ["proleće", "leto", "jesen"] },
+
+  // ============ BROJEVI ============
+  { q: "null", c: "nula", w: ["jedan", "dva", "tri"] },
+  { q: "eins", c: "jedan", w: ["dva", "tri", "nula"] },
+  { q: "zwei", c: "dva", w: ["jedan", "tri", "četiri"] },
+  { q: "drei", c: "tri", w: ["dva", "četiri", "pet"] },
+  { q: "vier", c: "četiri", w: ["tri", "pet", "šest"] },
+  { q: "fünf", c: "pet", w: ["četiri", "šest", "sedam"] },
+  { q: "sechs", c: "šest", w: ["sedam", "pet", "osam"] },
+  { q: "sieben", c: "sedam", w: ["šest", "osam", "devet"] },
+  { q: "acht", c: "osam", w: ["sedam", "devet", "deset"] },
+  { q: "neun", c: "devet", w: ["osam", "deset", "sedam"] },
+  { q: "zehn", c: "deset", w: ["devet", "jedanaest", "dvanaest"] },
+  { q: "elf", c: "jedanaest", w: ["deset", "dvanaest", "trinaest"] },
+  { q: "zwölf", c: "dvanaest", w: ["jedanaest", "trinaest", "deset"] },
+  { q: "zwanzig", c: "dvadeset", w: ["trideset", "deset", "pedeset"] },
+  { q: "dreißig", c: "trideset", w: ["dvadeset", "četrdeset", "pedeset"] },
+  { q: "vierzig", c: "četrdeset", w: ["trideset", "pedeset", "šezdeset"] },
+  { q: "fünfzig", c: "pedeset", w: ["četrdeset", "šezdeset", "sedamdeset"] },
+  { q: "sechzig", c: "šezdeset", w: ["pedeset", "sedamdeset", "osamdeset"] },
+  { q: "siebzig", c: "sedamdeset", w: ["šezdeset", "osamdeset", "devedeset"] },
+  { q: "achtzig", c: "osamdeset", w: ["sedamdeset", "devedeset", "sto"] },
+  { q: "neunzig", c: "devedeset", w: ["osamdeset", "sto", "hiljadu"] },
+  { q: "hundert", c: "sto", w: ["hiljadu", "deset", "milion"] },
+  { q: "tausend", c: "hiljadu", w: ["sto", "milion", "deset"] },
+  { q: "eine Million", c: "milion", w: ["milijarda", "hiljada", "sto"] },
+
+  // ============ BOJE ============
+  { q: "gelb", c: "žuta", w: ["crvena", "plava", "zelena"] },
+  { q: "orange", c: "narandžasta", w: ["crvena", "žuta", "roze"] },
+  { q: "rot", c: "crvena", w: ["žuta", "plava", "zelena"] },
+  { q: "blau", c: "plava", w: ["crvena", "žuta", "zelena"] },
+  { q: "grün", c: "zelena", w: ["crvena", "plava", "žuta"] },
+  { q: "schwarz", c: "crna", w: ["bela", "siva", "braon"] },
+  { q: "weiß", c: "bela", w: ["crna", "siva", "braon"] },
+  { q: "braun", c: "braon", w: ["crna", "bela", "siva"] },
+  { q: "grau", c: "siva", w: ["crna", "bela", "braon"] },
+  { q: "rosa", c: "roze", w: ["crvena", "ljubičasta", "bela"] },
+  { q: "lila", c: "ljubičasta", w: ["roze", "plava", "crvena"] },
+  { q: "golden", c: "zlatna", w: ["srebrna", "bronzana", "bakar"] },
+
+  // ============ PORODICA ============
+  { q: "die Familie", c: "porodica", w: ["prijatelj", "komšija", "kolega"] },
+  { q: "die Eltern", c: "roditelji", w: ["deca", "braća", "sestre"] },
+  { q: "die Kinder", c: "deca", w: ["roditelji", "prijatelji", "komšije"] },
+  { q: "der Vater", c: "otac", w: ["majka", "sin", "brat"] },
+  { q: "die Mutter", c: "majka", w: ["otac", "ćerka", "sestra"] },
+  { q: "der Sohn", c: "sin", w: ["ćerka", "brat", "otac"] },
+  { q: "die Tochter", c: "ćerka", w: ["sin", "sestra", "majka"] },
+  { q: "der Bruder", c: "brat", w: ["sestra", "sin", "otac"] },
+  { q: "die Schwester", c: "sestra", w: ["brat", "ćerka", "majka"] },
+  { q: "die Geschwister", c: "braća i sestre", w: ["roditelji", "deca", "rođaci"] },
+  { q: "der Großvater", c: "deda", w: ["baba", "otac", "ujak"] },
+  { q: "die Großmutter", c: "baba", w: ["deda", "majka", "tetka"] },
+  { q: "der Opa", c: "deda", w: ["baba", "otac", "ujak"] },
+  { q: "die Oma", c: "baba", w: ["deda", "majka", "tetka"] },
+  { q: "die Tante", c: "tetka", w: ["ujak", "baba", "sestra"] },
+  { q: "der Onkel", c: "ujak / stric", w: ["tetka", "deda", "brat"] },
+  { q: "der Neffe", c: "sinovac / bratanac", w: ["sinovica", "unuk", "brat"] },
+  { q: "die Nichte", c: "sinovica / bratanica", w: ["sinovac", "unuka", "sestra"] },
+  { q: "der Cousin", c: "brat od strica / tetke", w: ["sinovac", "ujak", "deda"] },
+  { q: "die Cousine", c: "sestra od strica / tetke", w: ["sinovica", "tetka", "baba"] },
+  { q: "der Schwiegervater", c: "tast / svekar", w: ["punac", "zet", "dever"] },
+  { q: "die Schwiegermutter", c: "tašta / svekrva", w: ["snajka", "zaova", "jetrva"] },
+  { q: "der Schwager", c: "zet / dever", w: ["tast", "šurak", "kum"] },
+  { q: "die Schwägerin", c: "snajka / zaova", w: ["svekrva", "tetka", "kuma"] },
+  { q: "das Kind", c: "dete", w: ["odrasli", "mladić", "dečak"] },
+  { q: "der Junge", c: "dečak", w: ["devojčica", "mladić", "muškarac"] },
+  { q: "das Mädchen", c: "devojčica", w: ["dečak", "mladić", "žena"] },
+  { q: "der Mann", c: "čovek / muž", w: ["žena", "dete", "gospodin"] },
+  { q: "die Frau", c: "žena", w: ["čovek", "gospodin", "devojka"] },
+  { q: "der Herr", c: "gospodin", w: ["žena", "čovek", "dete"] },
+
+  // ============ BRAČNI STATUS ============
+  { q: "verheiratet", c: "oženjen / udata", w: ["razveden", "neoženjen", "udovac"] },
+  { q: "ledig", c: "neoženjen / neudata", w: ["oženjen", "razveden", "udovac"] },
+  { q: "geschieden", c: "razveden", w: ["oženjen", "neoženjen", "udovac"] },
+  { q: "verwitwet", c: "udovac / udovica", w: ["oženjen", "razveden", "neoženjen"] },
+  { q: "Single", c: "singl", w: ["oženjen", "razveden", "u vezi"] },
+  { q: "in einer Beziehung", c: "u vezi", w: ["singl", "oženjen", "razveden"] },
+  { q: "verlobt", c: "veren", w: ["oženjen", "singl", "razveden"] },
+
+  // ============ ZANIMANJA ============
+  { q: "der Beruf", c: "zanimanje", w: ["obrazovanje", "porodica", "stan"] },
+  { q: "der Lehrer", c: "učitelj / nastavnik", w: ["učenik", "profesor", "vaspitač"] },
+  { q: "die Lehrerin", c: "učiteljica / nastavnica", w: ["učenica", "profesorka", "vaspitačica"] },
+  { q: "der Student", c: "student", w: ["učenik", "profesor", "đak"] },
+  { q: "die Studentin", c: "studentkinja", w: ["učenica", "profesorka", "đakinja"] },
+  { q: "der Arzt", c: "lekar", w: ["učitelj", "kuvar", "advokat"] },
+  { q: "die Ärztin", c: "lekarica", w: ["učiteljica", "kuvarica", "advokatica"] },
+  { q: "der Zahnarzt", c: "zubar", w: ["lekar", "hirurg", "pedijatar"] },
+  { q: "der Koch", c: "kuvar", w: ["lekar", "učitelj", "pekar"] },
+  { q: "die Köchin", c: "kuvarica", w: ["lekarica", "učiteljica", "pekarica"] },
+  { q: "der Anwalt", c: "advokat", w: ["sudija", "lekar", "učitelj"] },
+  { q: "die Anwältin", c: "advokatica", w: ["sudija", "lekarica", "učiteljica"] },
+  { q: "der Richter", c: "sudija", w: ["advokat", "lekar", "učitelj"] },
+  { q: "der Bäcker", c: "pekar", w: ["kuvar", "sudija", "lekar"] },
+  { q: "der Konditor", c: "poslastičar", w: ["pekar", "kuvar", "mesar"] },
+  { q: "der Bauer", c: "seljak", w: ["pekar", "sudija", "kuvar"] },
+  { q: "die Bäuerin", c: "seljanka", w: ["pekarica", "sudija", "kuvarica"] },
+  { q: "der Ingenieur", c: "inženjer", w: ["arhitekta", "tehničar", "majstor"] },
+  { q: "der Bankkaufmann", c: "bankar", w: ["blagajnik", "računovođa", "menadžer"] },
+  { q: "der Systemadministrator", c: "sistemski administrator", w: ["programer", "inženjer", "tehničar"] },
+  { q: "der Polizist", c: "policajac", w: ["vojnik", "vatrogasac", "čuvar"] },
+  { q: "der Feuerwehrmann", c: "vatrogasac", w: ["policajac", "vojnik", "spasilac"] },
+  { q: "der Verkäufer", c: "prodavac", w: ["kupac", "blagajnik", "menadžer"] },
+  { q: "die Verkäuferin", c: "prodavačica", w: ["kupac", "blagajnica", "menadžerka"] },
+  { q: "der Kellner", c: "konobar", w: ["kuvar", "barmen", "recepcioner"] },
+  { q: "die Kellnerin", c: "konobarica", w: ["kuvarica", "barmenka", "recepcionerka"] },
+  { q: "der Friseur", c: "frizer", w: ["brijač", "kozmetičar", "moler"] },
+  { q: "der Fahrer", c: "vozač", w: ["putnik", "kondukter", "mehaničar"] },
+  { q: "der Handwerker", c: "zanatlija", w: ["radnik", "majstor", "inženjer"] },
+  { q: "der Maler", c: "slikar / moler", w: ["vajar", "pisac", "muzičar"] },
+  { q: "der Fotograf", c: "fotograf", w: ["slikar", "snimatelj", "model"] },
+  { q: "der Künstler", c: "umetnik", w: ["naučnik", "radnik", "zanatlija"] },
+  { q: "der Schauspieler", c: "glumac", w: ["pevač", "plesač", "reditelj"] },
+  { q: "der Sänger", c: "pevač", w: ["glumac", "plesač", "muzičar"] },
+  { q: "der Musiker", c: "muzičar", w: ["pevač", "glumac", "plesač"] },
+  { q: "der Schriftsteller", c: "pisac", w: ["novinar", "pesnik", "urednik"] },
+  { q: "der Journalist", c: "novinar", w: ["pisac", "urednik", "voditelj"] },
+  { q: "der Apotheker", c: "apotekar", w: ["lekar", "medicinska sestra", "zubar"] },
+  { q: "die Krankenschwester", c: "medicinska sestra", w: ["lekarica", "apotekarka", "babica"] },
+  { q: "der Architekt", c: "arhitekta", w: ["inženjer", "građevinar", "dizajner"] },
+  { q: "der Programmierer", c: "programer", w: ["inženjer", "administrator", "dizajner"] },
+  { q: "der Buchhalter", c: "knjigovođa", w: ["blagajnik", "računovođa", "sekretar"] },
+  { q: "der Geschäftsführer", c: "direktor", w: ["menadžer", "vlasnik", "šef"] },
+  { q: "der Arbeitnehmer", c: "radnik / zaposleni", w: ["poslodavac", "direktor", "šef"] },
+  { q: "der Arbeitgeber", c: "poslodavac", w: ["radnik", "zaposleni", "kolega"] },
+
+  // ============ ŠKOLA I OBRAZOVANJE ============
+  { q: "die Schule", c: "škola", w: ["vrtić", "fakultet", "kurs"] },
+  { q: "die Universität", c: "univerzitet", w: ["škola", "vrtić", "kurs"] },
+  { q: "die Uni", c: "fakultet", w: ["škola", "vrtić", "kurs"] },
+  { q: "der Unterricht", c: "nastava", w: ["odmor", "ispit", "domaći"] },
+  { q: "die Hausaufgabe", c: "domaći zadatak", w: ["ispit", "test", "lekcija"] },
+  { q: "die Aufgabe", c: "zadatak", w: ["rešenje", "pitanje", "odgovor"] },
+  { q: "die Prüfung", c: "ispit", w: ["test", "domaći", "zadatak"] },
+  { q: "die Aufnahmeprüfung", c: "prijemni ispit", w: ["završni ispit", "test", "kontrolni"] },
+  { q: "die Abschlussprüfung", c: "završni ispit", w: ["prijemni ispit", "test", "kontrolni"] },
+  { q: "das Abitur", c: "matura", w: ["diploma", "svedočanstvo", "test"] },
+  { q: "die Note", c: "ocena", w: ["test", "ispit", "zadatak"] },
+  { q: "das Zeugnis", c: "svedočanstvo", w: ["diploma", "sertifikat", "potvrda"] },
+  { q: "das Fach", c: "predmet / struka", w: ["ocena", "ispit", "zadatak"] },
+  { q: "die Ausbildung", c: "obrazovanje", w: ["vaspitanje", "školovanje", "učenje"] },
+  { q: "das Praktikum", c: "praksa", w: ["teorija", "predavanje", "ispit"] },
+  { q: "der Kurs", c: "kurs", w: ["predavanje", "čas", "lekcija"] },
+  { q: "die Kenntnis", c: "znanje", w: ["veština", "iskustvo", "obrazovanje"] },
+  { q: "die Voraussetzung", c: "pretpostavka / uslov", w: ["posledica", "rezultat", "cilj"] },
+  { q: "das Studium", c: "studije", w: ["posao", "kurs", "praksa"] },
+  { q: "der Abschluss", c: "završetak / diploma", w: ["početak", "prekid", "pauza"] },
+
+  // ============ HRANA I PIĆE ============
+  { q: "das Essen", c: "jelo / hrana", w: ["piće", "kolač", "voće"] },
+  { q: "das Frühstück", c: "doručak", w: ["ručak", "večera", "užina"] },
+  { q: "das Mittagessen", c: "ručak", w: ["doručak", "večera", "užina"] },
+  { q: "das Abendessen", c: "večera", w: ["doručak", "ručak", "užina"] },
+  { q: "das Brot", c: "hleb", w: ["kolač", "kifla", "pecivo"] },
+  { q: "das Brötchen", c: "kifla / zemica", w: ["hleb", "kolač", "pecivo"] },
+  { q: "das Gebäck", c: "pecivo", w: ["hleb", "kolač", "torta"] },
+  { q: "der Kuchen", c: "kolač", w: ["hleb", "kifla", "torta"] },
+  { q: "die Torte", c: "torta", w: ["kolač", "hleb", "kifla"] },
+  { q: "das Fleisch", c: "meso", w: ["riba", "povrće", "voće"] },
+  { q: "das Hähnchen", c: "piletina", w: ["govedina", "svinjetina", "jagnjetina"] },
+  { q: "das Rindfleisch", c: "govedina", w: ["piletina", "svinjetina", "jagnjetina"] },
+  { q: "das Schweinefleisch", c: "svinjetina", w: ["govedina", "piletina", "jagnjetina"] },
+  { q: "der Fisch", c: "riba", w: ["meso", "povrće", "voće"] },
+  { q: "der Reis", c: "pirinač", w: ["testenina", "krompir", "hleb"] },
+  { q: "die Nudeln", c: "testenina", w: ["pirinač", "krompir", "hleb"] },
+  { q: "die Kartoffel", c: "krompir", w: ["pirinač", "testenina", "hleb"] },
+  { q: "das Gemüse", c: "povrće", w: ["voće", "meso", "ribe"] },
+  { q: "das Obst", c: "voće", w: ["povrće", "meso", "ribe"] },
+  { q: "der Apfel", c: "jabuka", w: ["kruška", "banana", "narandža"] },
+  { q: "die Banane", c: "banana", w: ["jabuka", "kruška", "narandža"] },
+  { q: "die Orange", c: "narandža", w: ["jabuka", "banana", "limun"] },
+  { q: "die Zitrone", c: "limun", w: ["narandža", "jabuka", "banana"] },
+  { q: "die Tomate", c: "paradajz", w: ["krastavac", "paprika", "luk"] },
+  { q: "die Gurke", c: "krastavac", w: ["paradajz", "paprika", "luk"] },
+  { q: "die Zwiebel", c: "luk", w: ["beli luk", "paradajz", "krompir"] },
+  { q: "der Knoblauch", c: "beli luk", w: ["luk", "paradajz", "krompir"] },
+  { q: "die Karotte", c: "mrkva / šargarepa", w: ["krompir", "luk", "kupus"] },
+  { q: "der Kohl", c: "kupus", w: ["krompir", "luk", "mrkva"] },
+  { q: "der Salat", c: "salata", w: ["supa", "čorba", "sos"] },
+  { q: "die Suppe", c: "supa", w: ["čorba", "sos", "salata"] },
+  { q: "die Soße", c: "sos", w: ["supa", "čorba", "salata"] },
+  { q: "das Dessert", c: "desert", w: ["predjelo", "glavno jelo", "salata"] },
+  { q: "der Nachtisch", c: "desert", w: ["predjelo", "glavno jelo", "salata"] },
+  { q: "das Gericht", c: "jelo / obrok", w: ["piće", "desert", "predjelo"] },
+  { q: "die Speise", c: "jelo", w: ["piće", "desert", "predjelo"] },
+  { q: "der Teller", c: "tanjir", w: ["šolja", "čaša", "escajg"] },
+  { q: "die Tasse", c: "šolja", w: ["tanjir", "čaša", "escajg"] },
+  { q: "das Glas", c: "čaša", w: ["tanjir", "šolja", "flaša"] },
+  { q: "die Flasche", c: "flaša", w: ["čaša", "šolja", "tanjir"] },
+  { q: "das Besteck", c: "escajg", w: ["tanjir", "čaša", "šolja"] },
+  { q: "das Messer", c: "nož", w: ["viljuška", "kašika", "tanjir"] },
+  { q: "die Gabel", c: "viljuška", w: ["nož", "kašika", "tanjir"] },
+  { q: "der Löffel", c: "kašika", w: ["nož", "viljuška", "tanjir"] },
+  { q: "die Serviette", c: "salveta", w: ["stolnjak", "ubrus", "tanjir"] },
+  { q: "der Wasser", c: "voda", w: ["mleko", "sok", "pivo"] },
+  { q: "die Milch", c: "mleko", w: ["voda", "sok", "čaj"] },
+  { q: "der Kaffee", c: "kafa", w: ["čaj", "sok", "mleko"] },
+  { q: "der Tee", c: "čaj", w: ["kafa", "sok", "mleko"] },
+  { q: "der Saft", c: "sok", w: ["voda", "mleko", "čaj"] },
+  { q: "der Orangensaft", c: "sok od narandže", w: ["sok od jabuke", "limunada", "voda"] },
+  { q: "das Bier", c: "pivo", w: ["vino", "rakija", "sok"] },
+  { q: "der Wein", c: "vino", w: ["pivo", "rakija", "sok"] },
+  { q: "der Schnaps", c: "rakija", w: ["vino", "pivo", "sok"] },
+  { q: "die Cola", c: "kola", w: ["fanta", "sprite", "voda"] },
+  { q: "der Zucker", c: "šećer", w: ["so", "brašno", "med"] },
+  { q: "das Salz", c: "so", w: ["šećer", "brašno", "med"] },
+  { q: "das Mehl", c: "brašno", w: ["šećer", "so", "med"] },
+  { q: "das Öl", c: "ulje", w: ["sirće", "voda", "mleko"] },
+  { q: "der Essig", c: "sirće", w: ["ulje", "voda", "mleko"] },
+  { q: "das Ei", c: "jaje", w: ["mleko", "meso", "sir"] },
+  { q: "der Käse", c: "sir", w: ["kajmak", "pavlaka", "jogurt"] },
+  { q: "der Schinken", c: "šunka", w: ["slanina", "kobasica", "salama"] },
+  { q: "die Wurst", c: "kobasica", w: ["šunka", "slanina", "salama"] },
+  { q: "süß", c: "slatko", w: ["slano", "gorko", "kiselo"] },
+  { q: "salzig", c: "slano", w: ["slatko", "gorko", "kiselo"] },
+  { q: "bitter", c: "gorko", w: ["slatko", "slano", "kiselo"] },
+  { q: "sauer", c: "kiselo / ljuto", w: ["slatko", "slano", "gorko"] },
+  { q: "scharf", c: "ljuto", w: ["blago", "slano", "slatko"] },
+  { q: "fett", c: "masno", w: ["posno", "slano", "slatko"] },
+  { q: "frisch", c: "sveže", w: ["staro", "pokvareno", "smrznuto"] },
+  { q: "lecker", c: "ukusno", w: ["neukusno", "gorko", "bljutavo"] },
+
+  // ============ RESTORAN ============
+  { q: "das Restaurant", c: "restoran", w: ["kafana", "menza", "bioskop"] },
+  { q: "die Speisekarte", c: "jelovnik", w: ["račun", "porudžbina", "karta"] },
+  { q: "das Menü", c: "meni", w: ["račun", "porudžbina", "karta"] },
+  { q: "die Rechnung", c: "račun", w: ["cena", "novac", "ponuda"] },
+  { q: "bestellen", c: "poručiti", w: ["otkazati", "platiti", "kuvati"] },
+  { q: "der Kellner", c: "konobar", w: ["kuvar", "barmen", "recepcioner"] },
+  { q: "die Portion", c: "porcija", w: ["komad", "parče", "količina"] },
+  { q: "das Stück", c: "komad / parče", w: ["porcija", "količina", "paket"] },
+  { q: "die Menge", c: "količina", w: ["porcija", "komad", "parče"] },
+  { q: "der Preis", c: "cena", w: ["popust", "račun", "novac"] },
+  { q: "die Ermäßigung", c: "popust", w: ["cena", "račun", "porez"] },
+  { q: "bar bezahlen", c: "platiti kešom", w: ["platiti karticom", "platiti čekom", "platiti na rate"] },
+  { q: "mit Karte", c: "karticom", w: ["kešom", "čekom", "na rate"] },
+
+  // ============ KUĆA I STAN ============
+  { q: "das Haus", c: "kuća", w: ["stan", "zgrada", "soba"] },
+  { q: "die Wohnung", c: "stan", w: ["kuća", "zgrada", "soba"] },
+  { q: "das Zimmer", c: "soba", w: ["kuhinja", "kupatilo", "hodnik"] },
+  { q: "der Raum", c: "prostorija", w: ["soba", "kuhinja", "kupatilo"] },
+  { q: "die Küche", c: "kuhinja", w: ["soba", "kupatilo", "hodnik"] },
+  { q: "das Bad", c: "kupatilo", w: ["kuhinja", "soba", "hodnik"] },
+  { q: "das Badezimmer", c: "kupatilo", w: ["kuhinja", "soba", "hodnik"] },
+  { q: "die Toilette", c: "toalet", w: ["kupatilo", "kuhinja", "soba"] },
+  { q: "das Schlafzimmer", c: "spavaća soba", w: ["dnevna soba", "kuhinja", "kupatilo"] },
+  { q: "das Wohnzimmer", c: "dnevna soba", w: ["spavaća soba", "kuhinja", "kupatilo"] },
+  { q: "das Kinderzimmer", c: "dečja soba", w: ["spavaća soba", "kuhinja", "kupatilo"] },
+  { q: "das Esszimmer", c: "trpezarija", w: ["dnevna soba", "kuhinja", "kupatilo"] },
+  { q: "das Arbeitszimmer", c: "radna soba", w: ["spavaća soba", "kuhinja", "kupatilo"] },
+  { q: "der Flur", c: "hodnik", w: ["soba", "kuhinja", "kupatilo"] },
+  { q: "der Stock", c: "sprat", w: ["podrum", "tavan", "lift"] },
+  { q: "das Erdgeschoss", c: "prizemlje", w: ["sprat", "podrum", "tavan"] },
+  { q: "der Keller", c: "podrum", w: ["tavan", "sprat", "prizemlje"] },
+  { q: "der Dachboden", c: "tavan", w: ["podrum", "sprat", "prizemlje"] },
+  { q: "der Aufzug", c: "lift", w: ["stepenice", "pokretne stepenice", "vrata"] },
+  { q: "der Lift", c: "lift", w: ["stepenice", "pokretne stepenice", "vrata"] },
+  { q: "die Treppe", c: "stepenice", w: ["lift", "hodnik", "vrata"] },
+  { q: "das Fenster", c: "prozor", w: ["vrata", "zid", "pod"] },
+  { q: "die Tür", c: "vrata", w: ["prozor", "zid", "pod"] },
+  { q: "die Wand", c: "zid", w: ["pod", "plafon", "prozor"] },
+  { q: "der Boden", c: "pod", w: ["zid", "plafon", "prozor"] },
+  { q: "die Decke", c: "plafon / ćebe", w: ["pod", "zid", "prozor"] },
+  { q: "das Dach", c: "krov", w: ["pod", "zid", "prozor"] },
+  { q: "der Garten", c: "bašta", w: ["dvorište", "park", "šuma"] },
+  { q: "der Hof", c: "dvorište", w: ["bašta", "park", "šuma"] },
+  { q: "die Garage", c: "garaža", w: ["podrum", "tavan", "dvorište"] },
+  { q: "der Balkon", c: "balkon", w: ["terasa", "lođa", "dvorište"] },
+  { q: "die Terrasse", c: "terasa", w: ["balkon", "lođa", "dvorište"] },
+  { q: "das Möbel", c: "nameštaj", w: ["uređaj", "alat", "posuđe"] },
+  { q: "der Tisch", c: "sto", w: ["stolica", "fotelja", "krevet"] },
+  { q: "der Stuhl", c: "stolica", w: ["sto", "fotelja", "krevet"] },
+  { q: "das Bett", c: "krevet", w: ["sto", "stolica", "fotelja"] },
+  { q: "der Schrank", c: "ormar", w: ["polica", "fioka", "krevet"] },
+  { q: "das Regal", c: "polica", w: ["ormar", "fioka", "sto"] },
+  { q: "die Lampe", c: "lampa", w: ["sijalica", "sveća", "luster"] },
+  { q: "die Glühbirne", c: "sijalica", w: ["lampa", "sveća", "luster"] },
+  { q: "der Teppich", c: "tepih", w: ["parket", "pločica", "linoleum"] },
+  { q: "das Kissen", c: "jastuk", w: ["ćebe", "posteljina", "dušek"] },
+  { q: "die Decke", c: "ćebe", w: ["jastuk", "posteljina", "dušek"] },
+  { q: "die Matratze", c: "dušek", w: ["jastuk", "ćebe", "posteljina"] },
+  { q: "das Handtuch", c: "peškir", w: ["krpa", "ubrus", "stolnjak"] },
+  { q: "die Seife", c: "sapun", w: ["šampon", "peškir", "četka"] },
+  { q: "die Zahnbürste", c: "četkica za zube", w: ["četka za kosu", "češalj", "sapun"] },
+  { q: "die Haarbürste", c: "četka za kosu", w: ["četkica za zube", "češalj", "sapun"] },
+  { q: "der Kamm", c: "češalj", w: ["četka", "makaze", "ogledalo"] },
+  { q: "der Spiegel", c: "ogledalo", w: ["prozor", "slika", "sat"] },
+  { q: "der Vorhang", c: "zavesa", w: ["tepih", "ćilim", "stolnjak"] },
+  { q: "der Mülleimer", c: "kanta za smeće", w: ["korpa za veš", "kutija", "torba"] },
+
+  // ============ KUHINJSKI PRIBOR ============
+  { q: "der Kühlschrank", c: "frižider", w: ["zamrzivač", "šporet", "sudopera"] },
+  { q: "der Herd", c: "šporet", w: ["rerna", "mikrotalasna", "sudopera"] },
+  { q: "der Backofen", c: "rerna", w: ["šporet", "mikrotalasna", "sudopera"] },
+  { q: "die Mikrowelle", c: "mikrotalasna", w: ["rerna", "šporet", "sudopera"] },
+  { q: "die Spüle", c: "sudopera", w: ["šporet", "rerna", "frižider"] },
+  { q: "der Topf", c: "šerpa", w: ["tiganj", "lonac", "tanjir"] },
+  { q: "die Pfanne", c: "tiganj", w: ["šerpa", "lonac", "tanjir"] },
+  { q: "die Kanne", c: "čajnik / bokal", w: ["šerpa", "tiganj", "tanjir"] },
+
+  // ============ TELO I ZDRAVLJE ============
+  { q: "der Körper", c: "telo", w: ["duša", "um", "srce"] },
+  { q: "der Kopf", c: "glava", w: ["noga", "ruka", "telo"] },
+  { q: "das Gesicht", c: "lice", w: ["glava", "telo", "oči"] },
+  { q: "das Auge", c: "oko", w: ["uvo", "nos", "usta"] },
+  { q: "das Ohr", c: "uvo", w: ["oko", "nos", "usta"] },
+  { q: "die Nase", c: "nos", w: ["oko", "uvo", "usta"] },
+  { q: "der Mund", c: "usta", w: ["nos", "oko", "uvo"] },
+  { q: "die Lippe", c: "usna", w: ["nos", "oko", "uvo"] },
+  { q: "die Zunge", c: "jezik", w: ["zub", "usna", "nepce"] },
+  { q: "der Zahn", c: "zub", w: ["jezik", "usna", "nokat"] },
+  { q: "das Kinn", c: "brada", w: ["čelo", "obraz", "nos"] },
+  { q: "die Stirn", c: "čelo", w: ["obraz", "brada", "nos"] },
+  { q: "die Wange", c: "obraz", w: ["čelo", "brada", "nos"] },
+  { q: "der Hals", c: "vrat / grlo", w: ["glava", "rame", "grudi"] },
+  { q: "der Nacken", c: "potiljak", w: ["vrat", "rame", "leđa"] },
+  { q: "die Schulter", c: "rame", w: ["lakat", "ruka", "vrat"] },
+  { q: "der Arm", c: "ruka", w: ["noga", "rame", "lakat"] },
+  { q: "die Hand", c: "šaka", w: ["noga", "prst", "ruka"] },
+  { q: "der Finger", c: "prst", w: ["šaka", "noga", "ruka"] },
+  { q: "der Daumen", c: "palac", w: ["kažiprst", "mali prst", "srednji prst"] },
+  { q: "der Bauch", c: "stomak", w: ["grudi", "leđa", "kuk"] },
+  { q: "die Brust", c: "grudi", w: ["stomak", "leđa", "rame"] },
+  { q: "der Rücken", c: "leđa", w: ["stomak", "grudi", "rame"] },
+  { q: "das Herz", c: "srce", w: ["mozak", "pluća", "jetra"] },
+  { q: "das Gehirn", c: "mozak", w: ["srce", "pluća", "jetra"] },
+  { q: "die Lunge", c: "pluća", w: ["srce", "mozak", "jetra"] },
+  { q: "das Knie", c: "koleno", w: ["lakat", "rame", "kuk"] },
+  { q: "der Fuß", c: "stopalo", w: ["noga", "prst", "peta"] },
+  { q: "das Bein", c: "noga", w: ["ruka", "stopalo", "koleno"] },
+  { q: "das Blut", c: "krv", w: ["voda", "znoj", "suza"] },
+  { q: "der Knochen", c: "kost", w: ["mišić", "koža", "zglob"] },
+  { q: "die Haut", c: "koža", w: ["kost", "mišić", "krv"] },
+  { q: "das Haar", c: "kosa / dlaka", w: ["koža", "nokat", "zub"] },
+  { q: "der Schmerz", c: "bol", w: ["radost", "tuga", "strah"] },
+  { q: "die Schmerzen", c: "bolovi", w: ["radost", "tuga", "strah"] },
+  { q: "krank", c: "bolestan", w: ["zdrav", "jak", "umoran"] },
+  { q: "gesund", c: "zdrav", w: ["bolestan", "slab", "umoran"] },
+  { q: "die Gesundheit", c: "zdravlje", w: ["bolest", "snaga", "slabost"] },
+  { q: "die Krankheit", c: "bolest", w: ["zdravlje", "snaga", "slabost"] },
+  { q: "die Erkältung", c: "prehlada", w: ["grip", "temperatura", "kašalj"] },
+  { q: "die Grippe", c: "grip", w: ["prehlada", "temperatura", "kašalj"] },
+  { q: "das Fieber", c: "temperatura", w: ["prehlada", "grip", "kašalj"] },
+  { q: "der Husten", c: "kašalj", w: ["prehlada", "grip", "kijanje"] },
+  { q: "husten", c: "kašljati", w: ["kijati", "štucati", "zevati"] },
+  { q: "niesen", c: "kijati", w: ["kašljati", "štucati", "zevati"] },
+  { q: "wehtun", c: "boleti", w: ["lečiti", "ozdraviti", "patiti"] },
+  { q: "der Kopfschmerz", c: "glavobolja", w: ["stomačni bol", "zubobolja", "grlobolja"] },
+  { q: "das Medikament", c: "lek", w: ["vakcina", "tableta", "sirup"] },
+  { q: "die Tablette", c: "tableta", w: ["sirup", "kapsula", "injekcija"] },
+  { q: "die Impfung", c: "vakcina / vakcinacija", w: ["lek", "tableta", "injekcija"] },
+  { q: "der Arzt", c: "lekar", w: ["učitelj", "kuvar", "advokat"] },
+  { q: "das Krankenhaus", c: "bolnica", w: ["apoteka", "ordinacija", "dom zdravlja"] },
+  { q: "die Apotheke", c: "apoteka", w: ["bolnica", "ordinacija", "dom zdravlja"] },
+  { q: "die Praxis", c: "ordinacija", w: ["bolnica", "apoteka", "dom zdravlja"] },
+  { q: "die Untersuchung", c: "pregled", w: ["operacija", "terapija", "dijagnoza"] },
+  { q: "die Behandlung", c: "lečenje / tretman", w: ["pregled", "dijagnoza", "operacija"] },
+  { q: "das Rezept", c: "recept", w: ["lek", "dijagnoza", "uput"] },
+  { q: "die Salbe", c: "mast", w: ["tableta", "sirup", "kapsula"] },
+  { q: "die Creme", c: "krema", w: ["mast", "losion", "gel"] },
+  { q: "die Verletzung", c: "povreda", w: ["bolest", "infekcija", "ozleda"] },
+  { q: "der Unfall", c: "nesreća", w: ["bolest", "povreda", "incident"] },
+  { q: "die Wunde", c: "rana", w: ["ožiljak", "modrica", "povreda"] },
+  { q: "müde", c: "umoran", w: ["gladan", "žedan", "sitan"] },
+  { q: "schläfrig", c: "pospan", w: ["budan", "umoran", "aktivan"] },
+  { q: "wach", c: "budan", w: ["pospan", "umoran", "nesvestan"] },
+  { q: "hungrig", c: "gladan", w: ["žedan", "sit", "umoran"] },
+  { q: "durstig", c: "žedan", w: ["gladan", "sit", "umoran"] },
+  { q: "satt", c: "sit", w: ["gladan", "žedan", "umoran"] },
+  { q: "der Hunger", c: "glad", w: ["žeđ", "sitost", "umor"] },
+  { q: "der Durst", c: "žeđ", w: ["glad", "sitost", "umor"] },
+  { q: "schwach", c: "slab", w: ["jak", "zdrav", "snažan"] },
+  { q: "stark", c: "jak", w: ["slab", "mek", "tih"] },
+  { q: "die Kraft", c: "snaga", w: ["slabost", "brzina", "veličina"] },
+  { q: "die Bewegung", c: "kretanje", w: ["mirovanje", "stajanje", "sedenje"] },
+  { q: "sich bewegen", c: "kretati se", w: ["mirovati", "stajati", "sedeti"] },
+  { q: "sich ausruhen", c: "odmarati se", w: ["raditi", "truditi se", "žuriti"] },
+  { q: "sich entspannen", c: "opustiti se", w: ["napeti se", "umiriti se", "uzbuditi se"] },
+
+  // ============ ODJEĆA ============
+  { q: "die Kleidung", c: "odeća", w: ["obuća", "nameštaj", "posuđe"] },
+  { q: "das Hemd", c: "košulja", w: ["majica", "džemper", "jakna"] },
+  { q: "die Hose", c: "pantalone", w: ["suknja", "šorts", "helanke"] },
+  { q: "die Jeans", c: "farmerke", w: ["pantalone", "šorts", "suknja"] },
+  { q: "die Jacke", c: "jakna", w: ["kaput", "prsluk", "džemper"] },
+  { q: "der Mantel", c: "kaput", w: ["jakna", "prsluk", "džemper"] },
+  { q: "der Pullover", c: "džemper", w: ["majica", "košulja", "jakna"] },
+  { q: "das Kleid", c: "haljina", w: ["suknja", "bluza", "pantalone"] },
+  { q: "der Rock", c: "suknja", w: ["haljina", "pantalone", "šorts"] },
+  { q: "die Bluse", c: "bluza", w: ["košulja", "majica", "haljina"] },
+  { q: "das T-Shirt", c: "majica", w: ["košulja", "bluza", "džemper"] },
+  { q: "die Socke", c: "čarapa", w: ["cipele", "papuče", "rukavice"] },
+  { q: "der Schuh", c: "cipela", w: ["čarapa", "papuča", "čizma"] },
+  { q: "die Schuhe", c: "cipele / patike", w: ["čarape", "papuče", "čizme"] },
+  { q: "der Stiefel", c: "čizma", w: ["cipela", "papuča", "sandal"] },
+  { q: "die Sandale", c: "sandala", w: ["cipela", "čizma", "papuča"] },
+  { q: "der Hut", c: "šešir", w: ["kapa", "marama", "kačket"] },
+  { q: "die Mütze", c: "kapa", w: ["šešir", "marama", "kačket"] },
+  { q: "der Schal", c: "šal", w: ["marama", "kravata", "pojas"] },
+  { q: "der Handschuh", c: "rukavica", w: ["šal", "kapa", "čarapa"] },
+  { q: "der Gürtel", c: "kaiš / pojas", w: ["kravata", "šal", "marama"] },
+  { q: "die Krawatte", c: "kravata", w: ["kaiš", "šal", "marama"] },
+  { q: "die Tasche", c: "tašna / torba", w: ["novčanik", "kofer", "ranac"] },
+  { q: "der Rucksack", c: "ranac", w: ["tašna", "kofer", "torba"] },
+  { q: "der Koffer", c: "kofer", w: ["ranac", "torba", "tašna"] },
+  { q: "die Geldbörse", c: "novčanik", w: ["tašna", "kofer", "fascikla"] },
+  { q: "die Brille", c: "naočare", w: ["sočiva", "šešir", "kapa"] },
+  { q: "der Schmuck", c: "nakit", w: ["odeća", "obuća", "aksesoar"] },
+  { q: "der Ring", c: "prsten", w: ["ogrlica", "narukvica", "minđuša"] },
+  { q: "die Kette", c: "ogrlica / lanac", w: ["prsten", "narukvica", "minđuša"] },
+  { q: "die Uhr", c: "sat", w: ["narukvica", "prsten", "ogrlica"] },
+  { q: "anziehen", c: "obući", w: ["svući", "presvući", "kupiti"] },
+  { q: "ausziehen", c: "svući", w: ["obući", "presvući", "kupiti"] },
+  { q: "tragen", c: "nositi", w: ["staviti", "svući", "kupiti"] },
+
+  // ============ KRETANJE I SAOBRAĆAJ ============
+  { q: "das Auto", c: "auto", w: ["bicikl", "motor", "autobus"] },
+  { q: "der Wagen", c: "vozilo / auto", w: ["bicikl", "motor", "autobus"] },
+  { q: "der Bus", c: "autobus", w: ["tramvaj", "trolejbus", "voz"] },
+  { q: "der Zug", c: "voz", w: ["autobus", "tramvaj", "avion"] },
+  { q: "die Bahn", c: "železnica / voz", w: ["autobus", "tramvaj", "avion"] },
+  { q: "die U-Bahn", c: "metro", w: ["tramvaj", "autobus", "voz"] },
+  { q: "die S-Bahn", c: "gradska železnica", w: ["metro", "tramvaj", "autobus"] },
+  { q: "die Straßenbahn", c: "tramvaj", w: ["autobus", "metro", "trolejbus"] },
+  { q: "das Fahrrad", c: "bicikl", w: ["motor", "auto", "trotinet"] },
+  { q: "das Motorrad", c: "motor", w: ["bicikl", "auto", "trotinet"] },
+  { q: "das Flugzeug", c: "avion", w: ["voz", "auto", "brod"] },
+  { q: "das Schiff", c: "brod", w: ["avion", "voz", "auto"] },
+  { q: "das Taxi", c: "taksi", w: ["autobus", "voz", "tramvaj"] },
+  { q: "der Lastkraftwagen", c: "kamion", w: ["auto", "autobus", "kombi"] },
+  { q: "der LKW", c: "kamion", w: ["auto", "autobus", "kombi"] },
+  { q: "der PKW", c: "putničko vozilo", w: ["kamion", "autobus", "motor"] },
+  { q: "der Führerschein", c: "vozačka dozvola", w: ["lična karta", "pasoš", "saobraćajna"] },
+  { q: "der Ausweis", c: "lična karta", w: ["pasoš", "vozačka dozvola", "viza"] },
+  { q: "der Pass", c: "pasoš", w: ["lična karta", "vozačka dozvola", "viza"] },
+  { q: "das Visum", c: "viza", w: ["pasoš", "lična karta", "vozačka dozvola"] },
+  { q: "das Kennzeichen", c: "tablice", w: ["saobraćajna", "vozačka", "lična karta"] },
+  { q: "tanken", c: "sipati gorivo", w: ["prati auto", "parkirati", "voziti"] },
+  { q: "die Tankstelle", c: "pumpa", w: ["radionica", "parking", "garaža"] },
+  { q: "die Werkstatt", c: "radionica", w: ["kancelarija", "prodavnica", "magacin"] },
+  { q: "die Bremse", c: "kočnica", w: ["kvačilo", "gas", "menjač"] },
+  { q: "bremsen", c: "kočiti", w: ["ubrzavati", "voziti", "stajati"] },
+  { q: "der Reifen", c: "guma", w: ["volan", "motor", "menjač"] },
+  { q: "die Panne", c: "kvar", w: ["udes", "gužva", "zastoj"] },
+  { q: "der Verkehr", c: "saobraćaj", w: ["gužva", "zastoj", "udes"] },
+  { q: "der Stau", c: "gužva u saobraćaju", w: ["saobraćaj", "zastoj", "udes"] },
+  { q: "der Bahnhof", c: "železnička stanica", w: ["aerodrom", "autobuska stanica", "luka"] },
+  { q: "der Flughafen", c: "aerodrom", w: ["železnička stanica", "autobuska stanica", "luka"] },
+  { q: "der Hafen", c: "luka", w: ["aerodrom", "železnička stanica", "autobuska stanica"] },
+  { q: "die Haltestelle", c: "stanica", w: ["peron", "kolosek", "stajalište"] },
+  { q: "der Bahnsteig", c: "peron", w: ["kolosek", "stanica", "stajalište"] },
+  { q: "das Gleis", c: "kolosek", w: ["peron", "stanica", "stajalište"] },
+  { q: "die Fahrkarte", c: "vozna karta", w: ["ulaznica", "rezervacija", "pasoš"] },
+  { q: "der Fahrplan", c: "red vožnje", w: ["vozni red", "raspored", "karta"] },
+  { q: "einsteigen", c: "ući (u vozilo)", w: ["izaći", "sići", "čekati"] },
+  { q: "aussteigen", c: "izaći (iz vozila)", w: ["ući", "čekati", "voziti"] },
+  { q: "umsteigen", c: "presedati", w: ["ući", "izaći", "čekati"] },
+  { q: "abfahren", c: "krenuti / poći", w: ["stići", "čekati", "stajati"] },
+  { q: "ankommen", c: "stići", w: ["krenuti", "čekati", "otići"] },
+  { q: "abholen", c: "pokupiti / doći po nekoga", w: ["ostaviti", "otpratiti", "poslati"] },
+  { q: "mitfahren", c: "ići sa nekim", w: ["voziti sam", "pešačiti", "čekati"] },
+  { q: "zu Fuß", c: "peške", w: ["autom", "biciklom", "vozom"] },
+  { q: "die Reise", c: "putovanje", w: ["odmor", "posao", "izlet"] },
+  { q: "der Ausflug", c: "izlet", w: ["putovanje", "odmor", "poseta"] },
+  { q: "der Urlaub", c: "odmor", w: ["posao", "put", "vikend"] },
+  { q: "das Gepäck", c: "prtljag", w: ["kofer", "ranac", "torba"] },
+  { q: "die Fahrt", c: "vožnja", w: ["let", "plovidba", "šetnja"] },
+  { q: "der Flug", c: "let", w: ["vožnja", "plovidba", "šetnja"] },
+
+  // ============ GRAD I MESTO ============
+  { q: "die Stadt", c: "grad", w: ["država", "selo", "ulica"] },
+  { q: "das Dorf", c: "selo", w: ["grad", "varoš", "prestonica"] },
+  { q: "das Land", c: "zemlja / selo", w: ["grad", "država", "more"] },
+  { q: "der Staat", c: "država", w: ["grad", "selo", "ulica"] },
+  { q: "die Straße", c: "ulica", w: ["put", "trg", "sokak"] },
+  { q: "der Weg", c: "put", w: ["ulica", "trg", "sokak"] },
+  { q: "der Platz", c: "trg", w: ["ulica", "put", "sokak"] },
+  { q: "der Marktplatz", c: "trg", w: ["pijaca", "ulica", "park"] },
+  { q: "der Markt", c: "pijaca", w: ["prodavnica", "tržni centar", "bioskop"] },
+  { q: "die Ecke", c: "ćošak", w: ["ivica", "strana", "sredina"] },
+  { q: "die Brücke", c: "most", w: ["tunel", "put", "ulica"] },
+  { q: "der Park", c: "park", w: ["šuma", "bašta", "dvorište"] },
+  { q: "der Dom", c: "katedrala", w: ["crkva", "manastir", "hram"] },
+  { q: "die Kirche", c: "crkva", w: ["džamija", "sinagoga", "manastir"] },
+  { q: "das Rathaus", c: "gradska većnica", w: ["opština", "sud", "škola"] },
+  { q: "die Post", c: "pošta", w: ["banka", "škola", "bolnica"] },
+  { q: "die Bank", c: "banka / klupa", w: ["pošta", "škola", "bolnica"] },
+  { q: "die Apotheke", c: "apoteka", w: ["bolnica", "ordinacija", "dom zdravlja"] },
+  { q: "das Krankenhaus", c: "bolnica", w: ["apoteka", "ordinacija", "dom zdravlja"] },
+  { q: "die Schule", c: "škola", w: ["vrtić", "fakultet", "kurs"] },
+  { q: "der Kindergarten", c: "vrtić", w: ["škola", "fakultet", "jasle"] },
+  { q: "das Museum", c: "muzej", w: ["galerija", "pozorište", "biblioteka"] },
+  { q: "die Bibliothek", c: "biblioteka", w: ["knjižara", "muzej", "galerija"] },
+  { q: "das Theater", c: "pozorište", w: ["bioskop", "opera", "balet"] },
+  { q: "das Kino", c: "bioskop", w: ["pozorište", "opera", "balet"] },
+  { q: "das Restaurant", c: "restoran", w: ["kafana", "menza", "bioskop"] },
+  { q: "das Café", c: "kafić", w: ["restoran", "menza", "pekara"] },
+  { q: "die Bäckerei", c: "pekara", w: ["mesara", "apoteka", "prodavnica"] },
+  { q: "die Metzgerei", c: "mesara", w: ["pekara", "apoteka", "prodavnica"] },
+  { q: "der Supermarkt", c: "supermarket", w: ["pijaca", "prodavnica", "tržni centar"] },
+  { q: "das Geschäft", c: "prodavnica / posao", w: ["pijaca", "supermarket", "tržni centar"] },
+  { q: "der Laden", c: "radnja", w: ["pijaca", "supermarket", "tržni centar"] },
+  { q: "das Kaufhaus", c: "robna kuća", w: ["supermarket", "pijaca", "prodavnica"] },
+  { q: "die Ampel", c: "semafor", w: ["znak", "tabla", "raspelo"] },
+  { q: "das Schild", c: "znak / tabla", w: ["semafor", "znak", "oglas"] },
+  { q: "der Gehweg", c: "trotoar", w: ["ulica", "put", "biciklistička staza"] },
+  { q: "der Bürgersteig", c: "trotoar", w: ["ulica", "put", "biciklistička staza"] },
+  { q: "die Kreuzung", c: "raskrsnica", w: ["skretanje", "ulica", "trg"] },
+  { q: "die Richtung", c: "smer / pravac", w: ["brzina", "razdaljina", "visina"] },
+  { q: "links", c: "levo", w: ["desno", "pravo", "nazad"] },
+  { q: "rechts", c: "desno", w: ["levo", "pravo", "nazad"] },
+  { q: "geradeaus", c: "pravo", w: ["levo", "desno", "nazad"] },
+  { q: "abbiegen", c: "skrenuti", w: ["ići pravo", "stajati", "vratiti se"] },
+  { q: "wenden", c: "okrenuti (se)", w: ["stajati", "ići pravo", "skrenuti"] },
+  { q: "zurück", c: "nazad", w: ["napred", "gore", "dole"] },
+  { q: "weiter", c: "dalje", w: ["nazad", "gore", "dole"] },
+  { q: "die Nähe", c: "blizina", w: ["daljina", "sredina", "ivica"] },
+  { q: "in der Nähe", c: "u blizini", w: ["daleko", "pored", "ispred"] },
+  { q: "weit", c: "daleko / široko", w: ["blizu", "usko", "kratko"] },
+  { q: "entfernt", c: "udaljen", w: ["blizu", "pored", "susedan"] },
+  { q: "die Mitte", c: "sredina", w: ["ivica", "kraj", "početak"] },
+  { q: "das Zentrum", c: "centar", w: ["periferija", "predgrađe", "okolina"] },
+
+  // ============ VREME I KLIMA ============
+  { q: "das Wetter", c: "vreme", w: ["klima", "prognoza", "temperatura"] },
+  { q: "die Sonne", c: "sunce", w: ["mesec", "zvezda", "oblak"] },
+  { q: "sonnig", c: "sunčano", w: ["oblačno", "kišovito", "snežno"] },
+  { q: "der Regen", c: "kiša", w: ["sneg", "grad", "magla"] },
+  { q: "regnen", c: "padati kiša", w: ["padati sneg", "duvati vetar", "sijati sunce"] },
+  { q: "regnerisch", c: "kišovito", w: ["sunčano", "snežno", "oblačno"] },
+  { q: "der Schnee", c: "sneg", w: ["kiša", "led", "grad"] },
+  { q: "schneien", c: "padati sneg", w: ["padati kiša", "duvati vetar", "sijati sunce"] },
+  { q: "der Wind", c: "vetar", w: ["bura", "oluja", "povetarac"] },
+  { q: "windig", c: "vetrovito", w: ["mirno", "sunčano", "kišovito"] },
+  { q: "der Sturm", c: "oluja", w: ["vetar", "bura", "povetarac"] },
+  { q: "stürmisch", c: "olujno", w: ["mirno", "sunčano", "kišovito"] },
+  { q: "die Wolke", c: "oblak", w: ["magla", "izmaglica", "para"] },
+  { q: "bewölkt", c: "oblačno", w: ["vedro", "sunčano", "kišovito"] },
+  { q: "wolkenlos", c: "bez oblaka / vedro", w: ["oblačno", "kišovito", "maglovito"] },
+  { q: "der Nebel", c: "magla", w: ["oblak", "izmaglica", "para"] },
+  { q: "das Gewitter", c: "grmljavina", w: ["oluja", "vetar", "kiša"] },
+  { q: "donnern", c: "grmeti", w: ["sevati", "padati kiša", "duvati"] },
+  { q: "blitzen", c: "sevati", w: ["grmeti", "padati kiša", "duvati"] },
+  { q: "warm", c: "toplo", w: ["hladno", "vruće", "sveže"] },
+  { q: "kalt", c: "hladno", w: ["toplo", "vruće", "sveže"] },
+  { q: "heiß", c: "vruće", w: ["hladno", "toplo", "sveže"] },
+  { q: "kühl", c: "sveže / prohladno", w: ["toplo", "vruće", "hladno"] },
+  { q: "trocken", c: "suvo", w: ["mokro", "vlažno", "sveže"] },
+  { q: "nass", c: "mokro", w: ["suvo", "vlažno", "toplo"] },
+  { q: "feucht", c: "vlažno", w: ["suvo", "mokro", "toplo"] },
+  { q: "die Temperatur", c: "temperatura", w: ["vreme", "klima", "prognoza"] },
+  { q: "der Grad", c: "stepen", w: ["temperatura", "klima", "vreme"] },
+  { q: "die Jahreszeit", c: "godišnje doba", w: ["mesec", "nedelja", "dan"] },
+
+  // ============ GLAGOLI - OSNOVNI ============
+  { q: "sein", c: "biti", w: ["imati", "moći", "hteti"] },
+  { q: "haben", c: "imati", w: ["biti", "moći", "hteti"] },
+  { q: "werden", c: "postati", w: ["biti", "imati", "moći"] },
+  { q: "kommen", c: "doći / dolaziti", w: ["ići", "videti", "govoriti"] },
+  { q: "gehen", c: "ići", w: ["doći", "stajati", "trčati"] },
+  { q: "fahren", c: "voziti", w: ["ići peške", "leteti", "plivati"] },
+  { q: "fliegen", c: "leteti", w: ["trčati", "plivati", "voziti"] },
+  { q: "laufen", c: "trčati / ići", w: ["stajati", "sedeti", "ležati"] },
+  { q: "rennen", c: "trčati", w: ["stajati", "sedeti", "ležati"] },
+  { q: "springen", c: "skakati", w: ["trčati", "stajati", "sedeti"] },
+  { q: "sehen", c: "gledati / videti", w: ["slušati", "govoriti", "ići"] },
+  { q: "schauen", c: "gledati", w: ["slušati", "govoriti", "ići"] },
+  { q: "gucken", c: "gledati", w: ["slušati", "govoriti", "ići"] },
+  { q: "hören", c: "slušati", w: ["gledati", "govoriti", "videti"] },
+  { q: "sprechen", c: "govoriti", w: ["slušati", "gledati", "pisati"] },
+  { q: "reden", c: "pričati", w: ["slušati", "gledati", "pisati"] },
+  { q: "sagen", c: "reći", w: ["slušati", "gledati", "pisati"] },
+  { q: "erzählen", c: "pričati", w: ["slušati", "gledati", "pisati"] },
+  { q: "fragen", c: "pitati", w: ["odgovoriti", "reći", "slušati"] },
+  { q: "antworten", c: "odgovoriti", w: ["pitati", "reći", "slušati"] },
+  { q: "lesen", c: "čitati", w: ["pisati", "slušati", "govoriti"] },
+  { q: "schreiben", c: "pisati", w: ["čitati", "slušati", "govoriti"] },
+  { q: "lernen", c: "učiti", w: ["predavati", "znati", "zaboraviti"] },
+  { q: "lehren", c: "predavati", w: ["učiti", "znati", "zaboraviti"] },
+  { q: "studieren", c: "studirati", w: ["učiti", "raditi", "predavati"] },
+  { q: "üben", c: "vežbati", w: ["učiti", "raditi", "predavati"] },
+  { q: "arbeiten", c: "raditi", w: ["spavati", "učiti", "igrati"] },
+  { q: "machen", c: "raditi / praviti", w: ["spavati", "učiti", "igrati"] },
+  { q: "tun", c: "činiti / raditi", w: ["spavati", "učiti", "igrati"] },
+  { q: "spielen", c: "igrati / svirati", w: ["raditi", "učiti", "spavati"] },
+  { q: "tanzen", c: "plesati", w: ["pevati", "svirati", "igrati"] },
+  { q: "singen", c: "pevati", w: ["igrati", "plesati", "svirati"] },
+  { q: "schlafen", c: "spavati", w: ["buditi se", "ustajati", "ležati"] },
+  { q: "aufwachen", c: "probuditi se", w: ["zaspati", "ustati", "ležati"] },
+  { q: "einschlafen", c: "zaspati", w: ["probuditi se", "ustati", "ležati"] },
+  { q: "aufstehen", c: "ustati", w: ["leći", "sesti", "stajati"] },
+  { q: "sitzen", c: "sedeti", w: ["stajati", "ležati", "ići"] },
+  { q: "stehen", c: "stajati", w: ["sedeti", "ležati", "ići"] },
+  { q: "liegen", c: "ležati", w: ["sedeti", "stajati", "ići"] },
+  { q: "essen", c: "jesti", w: ["piti", "kuvati", "spremati"] },
+  { q: "trinken", c: "piti", w: ["jesti", "kuvati", "spremati"] },
+  { q: "kochen", c: "kuvati", w: ["jesti", "piti", "spremati"] },
+  { q: "backen", c: "peći", w: ["kuvati", "pržiti", "spremati"] },
+  { q: "frühstücken", c: "doručkovati", w: ["ručati", "večerati", "užinati"] },
+  { q: "kaufen", c: "kupiti", w: ["prodati", "pozajmiti", "pokloniti"] },
+  { q: "verkaufen", c: "prodati", w: ["kupiti", "pozajmiti", "pokloniti"] },
+  { q: "bezahlen", c: "platiti", w: ["kupiti", "prodati", "pozajmiti"] },
+  { q: "kosten", c: "koštati", w: ["platiti", "kupiti", "prodati"] },
+  { q: "geben", c: "dati", w: ["uzeti", "kupiti", "prodati"] },
+  { q: "nehmen", c: "uzeti", w: ["dati", "kupiti", "prodati"] },
+  { q: "bekommen", c: "dobiti", w: ["dati", "poslati", "kupiti"] },
+  { q: "bringen", c: "doneti", w: ["odneti", "poslati", "kupiti"] },
+  { q: "holen", c: "uzeti / pokupiti", w: ["odneti", "poslati", "kupiti"] },
+  { q: "schicken", c: "poslati", w: ["primiti", "doneti", "odneti"] },
+  { q: "senden", c: "poslati", w: ["primiti", "doneti", "odneti"] },
+  { q: "finden", c: "naći / smatrati", w: ["izgubiti", "tražiti", "kupiti"] },
+  { q: "suchen", c: "tražiti", w: ["naći", "izgubiti", "kupiti"] },
+  { q: "verlieren", c: "izgubiti", w: ["naći", "dobiti", "zaraditi"] },
+  { q: "gewinnen", c: "pobediti / dobiti", w: ["izgubiti", "naći", "zaraditi"] },
+  { q: "helfen", c: "pomoći", w: ["odmoći", "sprečiti", "ignorisati"] },
+  { q: "brauchen", c: "biti potrebno / trebati", w: ["imati", "želeti", "morati"] },
+  { q: "mögen", c: "voleti / svideti se", w: ["mrzeti", "želeti", "morati"] },
+  { q: "lieben", c: "voleti", w: ["mrzeti", "svideti se", "žaliti"] },
+  { q: "möchten", c: "želeti (učtivo)", w: ["morati", "moći", "hteti"] },
+  { q: "wollen", c: "hteti", w: ["morati", "moći", "želeti"] },
+  { q: "können", c: "moći / umeti", w: ["znati", "morati", "hteti"] },
+  { q: "müssen", c: "morati", w: ["moći", "hteti", "smeti"] },
+  { q: "dürfen", c: "smeti", w: ["morati", "moći", "hteti"] },
+  { q: "sollen", c: "trebati", w: ["moći", "hteti", "smeti"] },
+  { q: "wissen", c: "znati (informaciju)", w: ["moći", "umeti", "poznavati"] },
+  { q: "kennen", c: "poznavati", w: ["znati", "moći", "umeti"] },
+  { q: "kennenlernen", c: "upoznati", w: ["zaboraviti", "izbeći", "pozdraviti"] },
+  { q: "verstehen", c: "razumeti", w: ["zbuniti se", "pogrešiti", "zaboraviti"] },
+  { q: "vergessen", c: "zaboraviti", w: ["setiti se", "zapamtiti", "znati"] },
+  { q: "erinnern", c: "sećati se", w: ["zaboraviti", "zapamtiti", "znati"] },
+  { q: "denken", c: "misliti", w: ["govoriti", "raditi", "sanjati"] },
+  { q: "glauben", c: "verovati / misliti", w: ["sumnjati", "znati", "poricati"] },
+  { q: "hoffen", c: "nadati se", w: ["sumnjati", "bojati se", "želeti"] },
+  { q: "wünschen", c: "želeti", w: ["morati", "moći", "hteti"] },
+  { q: "fühlen", c: "osećati", w: ["misliti", "znati", "videti"] },
+  { q: "spüren", c: "osetiti", w: ["videti", "čuti", "misliti"] },
+  { q: "lachen", c: "smejati se", w: ["plakati", "vikati", "pevati"] },
+  { q: "weinen", c: "plakati", w: ["smejati se", "pevati", "vikati"] },
+  { q: "lächeln", c: "smeškati se", w: ["plakati", "vikati", "pevati"] },
+  { q: "freuen", c: "radovati se", w: ["tužiti se", "ljutiti se", "bojati se"] },
+  { q: "ärgern", c: "ljutiti se", w: ["radovati se", "tužiti se", "bojati se"] },
+  { q: "fürchten", c: "bojati se", w: ["radovati se", "tužiti se", "ljutiti se"] },
+  { q: "warten", c: "čekati", w: ["žuriti", "trčati", "stajati"] },
+  { q: "bleiben", c: "ostati", w: ["otići", "doći", "vratiti se"] },
+  { q: "wohnen", c: "stanovati", w: ["raditi", "živeti", "putovati"] },
+  { q: "leben", c: "živeti", w: ["umreti", "postojati", "raditi"] },
+  { q: "sterben", c: "umreti", w: ["roditi se", "živeti", "ozdraviti"] },
+  { q: "öffnen", c: "otvoriti", w: ["zatvoriti", "zaključati", "pokriti"] },
+  { q: "schließen", c: "zatvoriti", w: ["otvoriti", "otključati", "pokriti"] },
+  { q: "anfangen", c: "početi", w: ["završiti", "prekinuti", "nastaviti"] },
+  { q: "beginnen", c: "početi", w: ["završiti", "prekinuti", "nastaviti"] },
+  { q: "enden", c: "završiti", w: ["početi", "nastaviti", "prekinuti"] },
+  { q: "aufhören", c: "prestati", w: ["nastaviti", "početi", "završiti"] },
+  { q: "weitermachen", c: "nastaviti", w: ["prekinuti", "završiti", "početi"] },
+  { q: "wiederholen", c: "ponoviti", w: ["zaboraviti", "preskočiti", "nastaviti"] },
+  { q: "erklären", c: "objasniti", w: ["pitati", "zbuniti", "prećutati"] },
+  { q: "zeigen", c: "pokazati", w: ["sakriti", "prećutati", "odneti"] },
+  { q: "geben", c: "dati", w: ["uzeti", "kupiti", "prodati"] },
+  { q: "danken", c: "zahvaliti", w: ["zamoliti", "izviniti se", "pozdraviti"] },
+  { q: "bitten", c: "moliti", w: ["nuditi", "zahvaliti", "tražiti"] },
+  { q: "bieten", c: "nuditi", w: ["moliti", "tražiti", "dati"] },
+  { q: "anbieten", c: "ponuditi", w: ["moliti", "tražiti", "dati"] },
+  { q: "empfehlen", c: "preporučiti", w: ["zabraniti", "narediti", "predložiti"] },
+  { q: "vorschlagen", c: "predložiti", w: ["narediti", "zabraniti", "kritikovati"] },
+  { q: "bestellen", c: "poručiti", w: ["otkazati", "platiti", "kuvati"] },
+  { q: "abholen", c: "pokupiti / doći po nekoga", w: ["ostaviti", "otpratiti", "poslati"] },
+  { q: "anrufen", c: "pozvati (telefonom)", w: ["poslati poruku", "napustiti", "posetiti"] },
+  { q: "besuchen", c: "posetiti", w: ["napustiti", "izbeći", "pozvati"] },
+  { q: "treffen", c: "sresti / sastati se", w: ["izbeći", "napustiti", "otići"] },
+  { q: "verabreden", c: "dogovoriti se", w: ["otkazati", "zaboraviti", "odbijati"] },
+  { q: "verabschieden", c: "pozdraviti se / rastati se", w: ["pozdraviti", "sresti se", "dogovoriti se"] },
+  { q: "umarmen", c: "zagrliti", w: ["poljubiti", "rukovati se", "pozdraviti"] },
+  { q: "küssen", c: "poljubiti", w: ["zagrliti", "rukovati se", "pozdraviti"] },
+  { q: "rufen", c: "zvati", w: ["slušati", "govoriti", "vikati"] },
+  { q: "schreien", c: "vikati", w: ["šaputati", "govoriti", "pevati"] },
+  { q: "flüstern", c: "šaputati", w: ["vikati", "govoriti", "pevati"] },
+  { q: "lügen", c: "lagati", w: ["govoriti istinu", "prećutati", "priznati"] },
+  { q: "stehlen", c: "krasti", w: ["pokloniti", "pozajmiti", "kupiti"] },
+  { q: "leihen", c: "pozajmiti", w: ["pokloniti", "kupiti", "prodati"] },
+  { q: "schenken", c: "pokloniti", w: ["pozajmiti", "kupiti", "prodati"] },
+  { q: "sparen", c: "štedeti", w: ["trošiti", "zaraditi", "pozajmiti"] },
+  { q: "verdienen", c: "zaraditi", w: ["potrošiti", "uštedeti", "izgubiti"] },
+  { q: "ausgeben", c: "trošiti", w: ["zaraditi", "uštedeti", "pozajmiti"] },
+  { q: "verbrauchen", c: "trošiti", w: ["zaraditi", "uštedeti", "pozajmiti"] },
+  { q: "reparieren", c: "popraviti", w: ["pokvariti", "uništiti", "kupiti"] },
+  { q: "putzen", c: "čistiti", w: ["prljati", "prati", "brisati"] },
+  { q: "waschen", c: "prati", w: ["čistiti", "brisati", "sušiti"] },
+  { q: "spülen", c: "oprati (sudove)", w: ["brisati", "sušiti", "čistiti"] },
+  { q: "wischen", c: "brisati", w: ["prati", "čistiti", "sušiti"] },
+  { q: "aufräumen", c: "pospremati", w: ["raspremati", "prljati", "brisati"] },
+  { q: "bügeln", c: "peglati", w: ["prati", "sušiti", "čistiti"] },
+  { q: "nähen", c: "šiti", w: ["plesti", "tkati", "krojiti"] },
+  { q: "gießen", c: "zalivati", w: ["saditi", "kositi", "brati"] },
+  { q: "sammeln", c: "sakupljati", w: ["bacati", "rasipati", "deliti"] },
+  { q: "werfen", c: "baciti", w: ["uhvatiti", "dodati", "držati"] },
+  { q: "fangen", c: "uhvatiti", w: ["pustiti", "baciti", "držati"] },
+  { q: "halten", c: "držati", w: ["pustiti", "baciti", "gurati"] },
+  { q: "lassen", c: "pustiti / ostaviti", w: ["uzeti", "držati", "gurati"] },
+  { q: "legen", c: "položiti", w: ["uzeti", "držati", "gurati"] },
+  { q: "stellen", c: "postaviti", w: ["uzeti", "držati", "gurati"] },
+  { q: "setzen", c: "posaditi / postaviti", w: ["uzeti", "držati", "gurati"] },
+  { q: "hängen", c: "visit / okačiti", w: ["ležati", "stajati", "sedeti"] },
+  { q: "stecken", c: "zabosti / staviti", w: ["izvaditi", "baciti", "držati"] },
+  { q: "ziehen", c: "vući / seliti se", w: ["gurati", "bacati", "držati"] },
+  { q: "schieben", c: "gurati", w: ["vući", "bacati", "držati"] },
+  { q: "heben", c: "podizati", w: ["spuštati", "gurati", "vući"] },
+  { q: "senken", c: "spuštati", w: ["podizati", "gurati", "vući"] },
+  { q: "drücken", c: "pritiskati", w: ["vući", "gurati", "podizati"] },
+  { q: "klettern", c: "penjati se", w: ["silaziti", "skakati", "trčati"] },
+  { q: "steigen", c: "rasti / penjati se", w: ["opadati", "silaziti", "stajati"] },
+  { q: "sinken", c: "tonuti / opadati", w: ["rasti", "plivati", "leteti"] },
+  { q: "fallen", c: "padati", w: ["ustajati", "skakati", "leteti"] },
+  { q: "schwimmen", c: "plivati", w: ["roniti", "leteti", "trčati"] },
+  { q: "reiten", c: "jahati", w: ["trčati", "voziti", "leteti"] },
+  { q: "segeln", c: "jedriti", w: ["veslati", "plivati", "roniti"] },
+  { q: "surfen", c: "surfovati", w: ["plivati", "roniti", "jedriti"] },
+  { q: "wandern", c: "planinariti", w: ["trčati", "voziti bicikl", "plivati"] },
+  { q: "spazieren", c: "šetati", w: ["trčati", "voziti", "plivati"] },
+  { q: "rauchen", c: "pušiti", w: ["piti", "jesti", "žvakati"] },
+  { q: "gähnen", c: "zevati", w: ["kašljati", "kijati", "štucati"] },
+  { q: "atmen", c: "disati", w: ["govoriti", "pevati", "kašljati"] },
+  { q: "schlucken", c: "gutati", w: ["žvakati", "piti", "disati"] },
+  { q: "kauen", c: "žvakati", w: ["gutati", "piti", "disati"] },
+  { q: "beißen", c: "gristi", w: ["gutati", "žvakati", "disati"] },
+  { q: "riechen", c: "mirisati", w: ["slušati", "gledati", "osećati"] },
+  { q: "schmecken", c: "imati ukus", w: ["mirisati", "gledati", "slušati"] },
+  { q: "klingen", c: "zvučati", w: ["izgledati", "mirisati", "osećati se"] },
+  { q: "aussehen", c: "izgledati", w: ["zvučati", "mirisati", "osećati se"] },
+  { q: "scheinen", c: "sijati / izgledati", w: ["izgledati", "zvučati", "osećati se"] },
+  { q: "passieren", c: "desiti se", w: ["izbeći", "planirati", "želeti"] },
+  { q: "geschehen", c: "dogoditi se", w: ["izbeći", "planirati", "želeti"] },
+  { q: "ändern", c: "promeniti", w: ["zadržati", "izgubiti", "naći"] },
+  { q: "wechseln", c: "promeniti / zameniti", w: ["zadržati", "izgubiti", "naći"] },
+  { q: "verändern", c: "izmeniti", w: ["zadržati", "izgubiti", "naći"] },
+  { q: "verbessern", c: "poboljšati", w: ["pogoršati", "zadržati", "izgubiti"] },
+  { q: "verschlechtern", c: "pogoršati", w: ["poboljšati", "zadržati", "izgubiti"] },
+  { q: "verlängern", c: "produžiti", w: ["skratiti", "prekinuti", "završiti"] },
+  { q: "verkürzen", c: "skratiti", w: ["produžiti", "prekinuti", "završiti"] },
+  { q: "vergrößern", c: "povećati", w: ["smanjiti", "zadržati", "izgubiti"] },
+  { q: "verkleinern", c: "smanjiti", w: ["povećati", "zadržati", "izgubiti"] },
+  { q: "verhindern", c: "sprečiti", w: ["dozvoliti", "podržati", "pomoći"] },
+  { q: "erlauben", c: "dozvoliti", w: ["zabraniti", "sprečiti", "odbiti"] },
+  { q: "verbieten", c: "zabraniti", w: ["dozvoliti", "podržati", "pomoći"] },
+  { q: "erlauben", c: "dozvoliti", w: ["zabraniti", "sprečiti", "odbiti"] },
+  { q: "meinen", c: "misliti / smatrati", w: ["znati", "sumnjati", "poricati"] },
+  { q: "finden", c: "naći / smatrati", w: ["izgubiti", "tražiti", "kupiti"] },
+  { q: "vergleichen", c: "uporediti", w: ["razlikovati", "izjednačiti", "odvojiti"] },
+  { q: "entscheiden", c: "odlučiti", w: ["odložiti", "sumnjati", "oklevati"] },
+  { q: "wählen", c: "birati / glasati", w: ["odbiti", "predložiti", "kandidovati se"] },
+  { q: "planen", c: "planirati", w: ["izvesti", "odložiti", "prekinuti"] },
+  { q: "organisieren", c: "organizovati", w: ["izvesti", "odložiti", "prekinuti"] },
+  { q: "vorbereiten", c: "pripremiti", w: ["završiti", "odložiti", "prekinuti"] },
+  { q: "dauern", c: "trajati", w: ["prekinuti", "završiti", "početi"] },
+  { q: "enden", c: "završiti se", w: ["početi", "nastaviti", "prekinuti"] },
+  { q: "erreichen", c: "postići / dobiti", w: ["izgubiti", "promašiti", "propustiti"] },
+  { q: "schaffen", c: "uspeti / stvoriti", w: ["propasti", "izgubiti", "odustati"] },
+  { q: "versuchen", c: "pokušati", w: ["odustati", "uspeti", "propustiti"] },
+  { q: "aufgeben", c: "odustati", w: ["nastaviti", "uspeti", "pokušati"] },
+  { q: "schaffen", c: "uspeti", w: ["propasti", "odustati", "pokušati"] },
+  { q: "gewinnen", c: "pobediti", w: ["izgubiti", "odustati", "propustiti"] },
+  { q: "verlieren", c: "izgubiti", w: ["pobediti", "dobiti", "naći"] },
+  { q: "kämpfen", c: "boriti se", w: ["predati se", "odustati", "bežati"] },
+  { q: "streiten", c: "svadjati se", w: ["miriti se", "slagati se", "dogovarati se"] },
+  { q: "sich einigen", c: "složiti se", w: ["posvadjati se", "rastati se", "odbiti"] },
+  { q: "diskutieren", c: "diskutovati", w: ["prećutati", "slagati se", "odbiti"] },
+  { q: "telefonieren", c: "telefonirati", w: ["pisati", "posetiti", "prekinuti"] },
+  { q: "funktionieren", c: "funkcionisati", w: ["pokvariti se", "stajati", "čekati"] },
+  { q: "passen", c: "odgovarati", w: ["smetati", "preprečavati", "odbijati"] },
+  { q: "gefallen", c: "dopadati se", w: ["smetati", "odbiti", "prezirati"] },
+  { q: "schmecken", c: "prijati / imati ukus", w: ["smetati", "odbiti", "prezirati"] },
+  { q: "gehören", c: "pripadati", w: ["oteti", "pozajmiti", "pokloniti"] },
+  { q: "dauern", c: "trajati", w: ["prekinuti", "završiti", "početi"] },
+  { q: "scheinen", c: "izgledati / sijati", w: ["izgledati", "zvučati", "osećati se"] },
+  { q: "wirken", c: "delovati", w: ["izgledati", "zvučati", "osećati se"] },
+  { q: "aussehen", c: "izgledati", w: ["zvučati", "mirisati", "osećati se"] },
+  { q: "wissen", c: "znati", w: ["moći", "umeti", "poznavati"] },
+  { q: "kennen", c: "poznavati", w: ["znati", "moći", "umeti"] },
+  { q: "verstehen", c: "razumeti", w: ["zbuniti se", "pogrešiti", "zaboraviti"] },
+  { q: "vergessen", c: "zaboraviti", w: ["setiti se", "zapamtiti", "znati"] },
+  { q: "lernen", c: "učiti", w: ["predavati", "znati", "zaboraviti"] },
+  { q: "lehren", c: "predavati", w: ["učiti", "znati", "zaboraviti"] },
+  { q: "studieren", c: "studirati", w: ["učiti", "raditi", "predavati"] },
+
+  // ============ GLAGOLI SA PREFIKSIMA ============
+  { q: "anmachen", c: "uključiti", w: ["isključiti", "otvoriti", "zatvoriti"] },
+  { q: "ausmachen", c: "isključiti", w: ["uključiti", "otvoriti", "zatvoriti"] },
+  { q: "aufmachen", c: "otvoriti", w: ["zatvoriti", "uključiti", "isključiti"] },
+  { q: "zumachen", c: "zatvoriti", w: ["otvoriti", "uključiti", "isključiti"] },
+  { q: "anziehen", c: "obući", w: ["svući", "presvući", "kupiti"] },
+  { q: "ausziehen", c: "svući / iseliti se", w: ["obući", "presvući", "useliti se"] },
+  { q: "einziehen", c: "useliti se", w: ["iseliti se", "obući", "svući"] },
+  { q: "umziehen", c: "preseliti se / presvući se", w: ["ostati", "napustiti", "vratiti se"] },
+  { q: "anrufen", c: "pozvati (telefonom)", w: ["poslati poruku", "napustiti", "posetiti"] },
+  { q: "ankommen", c: "stići", w: ["krenuti", "čekati", "otići"] },
+  { q: "abfahren", c: "krenuti", w: ["stići", "čekati", "stajati"] },
+  { q: "abholen", c: "pokupiti", w: ["ostaviti", "otpratiti", "poslati"] },
+  { q: "abgeben", c: "predati", w: ["zadržati", "uzeti", "kupiti"] },
+  { q: "einladen", c: "pozvati", w: ["otkazati", "odbijati", "izbeći"] },
+  { q: "einsteigen", c: "ući", w: ["izaći", "sići", "čekati"] },
+  { q: "aussteigen", c: "izaći", w: ["ući", "čekati", "voziti"] },
+  { q: "umsteigen", c: "presedati", w: ["ući", "izaći", "čekati"] },
+  { q: "aufstehen", c: "ustati", w: ["leći", "sesti", "stajati"] },
+  { q: "aufwachen", c: "probuditi se", w: ["zaspati", "ustati", "ležati"] },
+  { q: "einschlafen", c: "zaspati", w: ["probuditi se", "ustati", "ležati"] },
+  { q: "aufhören", c: "prestati", w: ["nastaviti", "početi", "završiti"] },
+  { q: "aufräumen", c: "pospremati", w: ["raspremati", "prljati", "brisati"] },
+  { q: "aufpassen", c: "paziti", w: ["ignorisati", "zaboraviti", "prevideti"] },
+  { q: "anfangen", c: "početi", w: ["završiti", "prekinuti", "nastaviti"] },
+  { q: "anbieten", c: "ponuditi", w: ["moliti", "tražiti", "dati"] },
+  { q: "ankommen", c: "stići", w: ["krenuti", "čekati", "otići"] },
+  { q: "mitkommen", c: "poći sa nekim", w: ["ostati", "vratiti se", "otići sam"] },
+  { q: "mitnehmen", c: "poneti sa sobom", w: ["ostaviti", "poslati", "vratiti"] },
+  { q: "mitmachen", c: "učestvovati", w: ["gledati", "posmatrati", "izbegavati"] },
+  { q: "zuhören", c: "slušati (pažljivo)", w: ["govoriti", "vikati", "prekidati"] },
+  { q: "zumachen", c: "zatvoriti", w: ["otvoriti", "uključiti", "isključiti"] },
+  { q: "zurückkommen", c: "vratiti se", w: ["otići", "ostati", "krenuti"] },
+  { q: "zurückfahren", c: "vratiti se (vozilom)", w: ["otići", "ostati", "krenuti"] },
+  { q: "weiterfahren", c: "nastaviti vožnju", w: ["stati", "vratiti se", "skrenuti"] },
+  { q: "weitergehen", c: "nastaviti ići", w: ["stati", "vratiti se", "skrenuti"] },
+
+  // ============ PRIDEVI I PRILOZI ============
+  { q: "groß", c: "veliki / visok", w: ["mali", "nizak", "kratak"] },
+  { q: "klein", c: "mali", w: ["veliki", "visok", "dugačak"] },
+  { q: "lang", c: "dugačak", w: ["kratak", "visok", "nizak"] },
+  { q: "kurz", c: "kratak", w: ["dugačak", "visok", "nizak"] },
+  { q: "hoch", c: "visok", w: ["nizak", "dubok", "širok"] },
+  { q: "niedrig", c: "nizak", w: ["visok", "dubok", "širok"] },
+  { q: "breit", c: "širok", w: ["uzak", "dugačak", "kratak"] },
+  { q: "schmal", c: "uzak", w: ["širok", "dugačak", "kratak"] },
+  { q: "eng", c: "tesan", w: ["širok", "labav", "slobodan"] },
+  { q: "weit", c: "širok / dalek", w: ["uzak", "blizu", "kratak"] },
+  { q: "tief", c: "dubok", w: ["plitak", "visok", "nizak"] },
+  { q: "dick", c: "debeo", w: ["tanak", "mršav", "sitan"] },
+  { q: "dünn", c: "tanak", w: ["debeo", "širok", "krupan"] },
+  { q: "schwer", c: "težak", w: ["lak", "lagan", "sitan"] },
+  { q: "leicht", c: "lak", w: ["težak", "krupan", "sitan"] },
+  { q: "neu", c: "nov", w: ["star", "polovan", "dotrajan"] },
+  { q: "alt", c: "star", w: ["nov", "mlad", "svež"] },
+  { q: "jung", c: "mlad", w: ["star", "nov", "svež"] },
+  { q: "gut", c: "dobar", w: ["loš", "prosečan", "slab"] },
+  { q: "schlecht", c: "loš", w: ["dobar", "odličan", "prosečan"] },
+  { q: "schön", c: "lep", w: ["ružan", "običan", "prosečan"] },
+  { q: "hässlich", c: "ružan", w: ["lep", "privlačan", "sladak"] },
+  { q: "hübsch", c: "lep / sladak", w: ["ružan", "običan", "prosečan"] },
+  { q: "teuer", c: "skup", w: ["jeftin", "povoljan", "pristupačan"] },
+  { q: "billig", c: "jeftin", w: ["skup", "luksuzan", "ekskluzivan"] },
+  { q: "günstig", c: "povoljan", w: ["skup", "luksuzan", "ekskluzivan"] },
+  { q: "modern", c: "moderan", w: ["staromodan", "zastareo", "klasičan"] },
+  { q: "altmodisch", c: "staromodan", w: ["moderan", "savremen", "aktuelan"] },
+  { q: "praktisch", c: "praktičan", w: ["nepraktičan", "beskoristan", "složen"] },
+  { q: "bequem", c: "udoban", w: ["neudoban", "tvrd", "neprijatan"] },
+  { q: "gemütlich", c: "prijatan / udoban", w: ["neudoban", "hladan", "neprijatan"] },
+  { q: "sauber", c: "čist", w: ["prljav", "zapušten", "neuredan"] },
+  { q: "schmutzig", c: "prljav", w: ["čist", "uredan", "sredjen"] },
+  { q: "ordentlich", c: "uredan", w: ["neuredan", "haotičan", "zapušten"] },
+  { q: "unordentlich", c: "neuredan", w: ["uredan", "sredjen", "čist"] },
+  { q: "voll", c: "pun", w: ["prazan", "polupun", "delimično pun"] },
+  { q: "leer", c: "prazan", w: ["pun", "ispunjen", "prepun"] },
+  { q: "richtig", c: "tačan", w: ["pogrešan", "netačan", "sumnjiv"] },
+  { q: "falsch", c: "pogrešan", w: ["tačan", "ispravan", "precizan"] },
+  { q: "wichtig", c: "važan", w: ["nevažan", "sporedan", "nebitan"] },
+  { q: "unwichtig", c: "nevažan", w: ["važan", "bitan", "ključan"] },
+  { q: "möglich", c: "moguć", w: ["nemoguć", "verovatan", "izvestan"] },
+  { q: "unmöglich", c: "nemoguć", w: ["moguć", "verovatan", "izvestan"] },
+  { q: "notwendig", c: "neophodan", w: ["nepotreban", "suvišan", "opcion"] },
+  { q: "nötig", c: "potreban", w: ["nepotreban", "suvišan", "opcion"] },
+  { q: "frei", c: "slobodan", w: ["zauzet", "okupiran", "zatvoren"] },
+  { q: "offen", c: "otvoren", w: ["zatvoren", "zaključan", "zapušen"] },
+  { q: "geschlossen", c: "zatvoren", w: ["otvoren", "slobodan", "pristupačan"] },
+  { q: "einfach", c: "jednostavan", w: ["složen", "komplikovan", "težak"] },
+  { q: "schwierig", c: "težak / komplikovan", w: ["lak", "jednostavan", "prost"] },
+  { q: "kompliziert", c: "komplikovan", w: ["jednostavan", "lak", "prost"] },
+  { q: "leicht", c: "lak", w: ["težak", "komplikovan", "složen"] },
+  { q: "schnell", c: "brz", w: ["spor", "polagan", "lenj"] },
+  { q: "langsam", c: "spor", w: ["brz", "hitаn", "ubrzan"] },
+  { q: "früh", c: "rano", w: ["kasno", "popodne", "ujutru"] },
+  { q: "spät", c: "kasno", w: ["rano", "ujutru", "popodne"] },
+  { q: "pünktlich", c: "tačan (vremenski)", w: ["netačan", "zakasneo", "poranio"] },
+  { q: "genau", c: "tačan / upravo", w: ["približan", "otprilike", "nesiguran"] },
+  { q: "ungefähr", c: "otprilike", w: ["tačno", "precizno", "sigurno"] },
+  { q: "circa", c: "oko / otprilike", w: ["tačno", "precizno", "sigurno"] },
+  { q: "fast", c: "skoro", w: ["jedva", "potpuno", "sasvim"] },
+  { q: "kaum", c: "jedva", w: ["skoro", "potpuno", "sasvim"] },
+  { q: "ganz", c: "ceo / sasvim", w: ["delimično", "polovično", "nešto"] },
+  { q: "nur", c: "samo", w: ["sve", "ništa", "mnogo"] },
+  { q: "auch", c: "takođe", w: ["samo", "ni", "niti"] },
+  { q: "schon", c: "već", w: ["još", "tek", "nikad"] },
+  { q: "noch", c: "još", w: ["već", "tek", "nikad"] },
+  { q: "erst", c: "tek", w: ["već", "još", "nikad"] },
+  { q: "immer", c: "uvek", w: ["nikad", "ponekad", "retko"] },
+  { q: "nie", c: "nikad", w: ["uvek", "ponekad", "često"] },
+  { q: "niemals", c: "nikad", w: ["uvek", "ponekad", "često"] },
+  { q: "oft", c: "često", w: ["retko", "nikad", "uvek"] },
+  { q: "häufig", c: "često", w: ["retko", "nikad", "uvek"] },
+  { q: "selten", c: "retko", w: ["često", "uvek", "ponekad"] },
+  { q: "manchmal", c: "ponekad", w: ["često", "nikad", "uvek"] },
+  { q: "meistens", c: "uglavnom", w: ["retko", "nikad", "ponekad"] },
+  { q: "jetzt", c: "sada", w: ["onda", "kasnije", "ranije"] },
+  { q: "dann", c: "onda", w: ["sada", "kasnije", "ranije"] },
+  { q: "danach", c: "posle toga", w: ["pre toga", "sada", "odmah"] },
+  { q: "vorher", c: "pre toga", w: ["posle toga", "sada", "odmah"] },
+  { q: "zuerst", c: "najpre", w: ["najzad", "posle", "konačno"] },
+  { q: "endlich", c: "konačno", w: ["najpre", "posle", "opet"] },
+  { q: "schließlich", c: "konačno", w: ["najpre", "posle", "opet"] },
+  { q: "wieder", c: "opet", w: ["nikad", "prvi put", "jednom"] },
+  { q: "gleich", c: "odmah / isto", w: ["kasnije", "nikad", "različito"] },
+  { q: "sofort", c: "odmah", w: ["kasnije", "nikad", "posle"] },
+  { q: "bald", c: "uskoro", w: ["kasnije", "sada", "juče"] },
+  { q: "später", c: "kasnije", w: ["ranije", "sada", "juče"] },
+  { q: "gestern", c: "juče", w: ["danas", "sutra", "prekjuče"] },
+  { q: "heute", c: "danas", w: ["juče", "sutra", "prekjuče"] },
+  { q: "morgen", c: "sutra", w: ["danas", "juče", "prekjuče"] },
+  { q: "vorgestern", c: "prekjuče", w: ["juče", "danas", "sutra"] },
+  { q: "übermorgen", c: "prekosutra", w: ["sutra", "danas", "juče"] },
+  { q: "hier", c: "ovde", w: ["tamo", "tuda", "negde"] },
+  { q: "dort", c: "tamo", w: ["ovde", "tuda", "negde"] },
+  { q: "da", c: "tamo / tu", w: ["ovde", "tuda", "negde"] },
+  { q: "überall", c: "svuda", w: ["nigde", "negde", "ovde"] },
+  { q: "nirgends", c: "nigde", w: ["svuda", "negde", "ovde"] },
+  { q: "irgendwo", c: "negde", w: ["svuda", "nigde", "ovde"] },
+  { q: "links", c: "levo", w: ["desno", "pravo", "nazad"] },
+  { q: "rechts", c: "desno", w: ["levo", "pravo", "nazad"] },
+  { q: "geradeaus", c: "pravo", w: ["levo", "desno", "nazad"] },
+  { q: "oben", c: "gore", w: ["dole", "napred", "nazad"] },
+  { q: "unten", c: "dole", w: ["gore", "napred", "nazad"] },
+  { q: "vorne", c: "napred", w: ["pozadi", "gore", "dole"] },
+  { q: "hinten", c: "pozadi", w: ["napred", "gore", "dole"] },
+  { q: "drinnen", c: "unutra", w: ["napolju", "gore", "dole"] },
+  { q: "draußen", c: "napolju", w: ["unutra", "gore", "dole"] },
+  { q: "zusammen", c: "zajedno", w: ["odvojeno", "sam", "posebno"] },
+  { q: "allein", c: "sam", w: ["zajedno", "sa nekim", "u društvu"] },
+  { q: "gemeinsam", c: "zajednički", w: ["pojedinačno", "samostalno", "odvojeno"] },
+  { q: "vielleicht", c: "možda", w: ["sigurno", "naravno", "nažalost"] },
+  { q: "sicher", c: "sigurno", w: ["možda", "nesigurno", "verovatno"] },
+  { q: "bestimmt", c: "sigurno / odredjeno", w: ["možda", "nesigurno", "verovatno"] },
+  { q: "natürlich", c: "naravno", w: ["možda", "sigurno", "nikako"] },
+  { q: "leider", c: "nažalost", w: ["srećom", "naravno", "možda"] },
+  { q: "zum Glück", c: "srećom", w: ["nažalost", "naravno", "možda"] },
+  { q: "hoffentlich", c: "nadam se", w: ["sigurno", "možda", "nažalost"] },
+  { q: "wahrscheinlich", c: "verovatno", w: ["sigurno", "možda", "nikako"] },
+  { q: "unbedingt", c: "obavezno", w: ["možda", "nikako", "uslovno"] },
+  { q: "auf keinen Fall", c: "ni u kom slučaju", w: ["obavezno", "možda", "svakako"] },
+  { q: "auf jeden Fall", c: "u svakom slučaju", w: ["nikako", "možda", "uslovno"] },
+  { q: "trotzdem", c: "uprkos tome", w: ["zato", "zbog toga", "dakle"] },
+  { q: "deshalb", c: "zbog toga", w: ["uprkos tome", "zato što", "dakle"] },
+  { q: "deswegen", c: "zbog toga", w: ["uprkos tome", "zato što", "dakle"] },
+  { q: "darum", c: "zbog toga", w: ["uprkos tome", "zato što", "dakle"] },
+  { q: "also", c: "dakle", w: ["uprkos tome", "zato što", "zbog toga"] },
+  { q: "sonst", c: "inače", w: ["dakle", "zato", "uprkos"] },
+  { q: "übrigens", c: "inače / uzgred", w: ["dakle", "zato", "uprkos"] },
+  { q: "außerdem", c: "osim toga", w: ["dakle", "zato", "uprkos"] },
+  { q: "zusätzlich", c: "dodatno", w: ["osnovno", "glavno", "sporedno"] },
+  { q: "besonders", c: "posebno", w: ["obično", "uvek", "nikad"] },
+  { q: "vor allem", c: "pre svega", w: ["posle svega", "na kraju", "uglavnom"] },
+  { q: "hauptsächlich", c: "uglavnom", w: ["sporedno", "retko", "nikad"] },
+  { q: "meistens", c: "uglavnom", w: ["retko", "nikad", "ponekad"] },
+  { q: "normalerweise", c: "normalno", w: ["retko", "nikad", "posebno"] },
+  { q: "gewöhnlich", c: "obično", w: ["posebno", "retko", "nikad"] },
+
+  // ============ VEZOVI I REČCE ============
+  { q: "und", c: "i", w: ["ili", "ali", "jer"] },
+  { q: "oder", c: "ili", w: ["i", "ali", "jer"] },
+  { q: "aber", c: "ali", w: ["i", "ili", "jer"] },
+  { q: "denn", c: "jer", w: ["i", "ili", "ali"] },
+  { q: "weil", c: "zato što", w: ["i", "ili", "ali"] },
+  { q: "dass", c: "da", w: ["i", "ili", "ali"] },
+  { q: "wenn", c: "kada / ako", w: ["i", "ili", "ali"] },
+  { q: "als", c: "kada (u prošlosti)", w: ["i", "ili", "ali"] },
+  { q: "ob", c: "da li", w: ["i", "ili", "ali"] },
+  { q: "obwohl", c: "iako", w: ["zato što", "ako", "kada"] },
+  { q: "während", c: "dok / tokom", w: ["pre", "posle", "kada"] },
+  { q: "bevor", c: "pre nego što", w: ["posle nego što", "dok", "kada"] },
+  { q: "nachdem", c: "nakon što", w: ["pre nego što", "dok", "kada"] },
+  { q: "bis", c: "dok / do", w: ["od", "pre", "posle"] },
+  { q: "seit", c: "od (vremena)", w: ["do", "pre", "posle"] },
+  { q: "seitdem", c: "od tada", w: ["do tada", "pre toga", "posle toga"] },
+  { q: "falls", c: "ako / u slučaju", w: ["iako", "zato što", "kada"] },
+  { q: "sondern", c: "nego", w: ["i", "ili", "ali"] },
+  { q: "sowohl...als auch", c: "kako...tako i", w: ["ni...ni", "ili...ili", "ne samo...nego i"] },
+  { q: "nicht nur...sondern auch", c: "ne samo...nego i", w: ["kako...tako", "ni...ni", "ili...ili"] },
+  { q: "weder...noch", c: "ni...ni", w: ["kako...tako", "ne samo...nego i", "ili...ili"] },
+  { q: "entweder...oder", c: "ili...ili", w: ["ni...ni", "kako...tako", "ne samo...nego i"] },
+
+  // ============ PRIJEDLOZI ============
+  { q: "in", c: "u", w: ["na", "kod", "iz"] },
+  { q: "an", c: "na (uz nešto)", w: ["u", "kod", "iz"] },
+  { q: "auf", c: "na", w: ["u", "kod", "iz"] },
+  { q: "unter", c: "ispod", w: ["iznad", "pored", "iza"] },
+  { q: "über", c: "iznad", w: ["ispod", "pored", "iza"] },
+  { q: "vor", c: "ispred / pre", w: ["iza", "posle", "pored"] },
+  { q: "hinter", c: "iza", w: ["ispred", "pored", "iznad"] },
+  { q: "neben", c: "pored", w: ["ispod", "iznad", "iza"] },
+  { q: "zwischen", c: "između", w: ["pored", "ispod", "iznad"] },
+  { q: "mit", c: "sa", w: ["bez", "protiv", "za"] },
+  { q: "ohne", c: "bez", w: ["sa", "protiv", "za"] },
+  { q: "für", c: "za", w: ["protiv", "sa", "bez"] },
+  { q: "gegen", c: "protiv", w: ["za", "sa", "bez"] },
+  { q: "aus", c: "iz", w: ["u", "na", "kod"] },
+  { q: "bei", c: "kod", w: ["iz", "u", "na"] },
+  { q: "nach", c: "posle / prema", w: ["pre", "dok", "kada"] },
+  { q: "zu", c: "ka / kod", w: ["od", "iz", "sa"] },
+  { q: "von", c: "od", w: ["do", "iz", "sa"] },
+  { q: "bis", c: "do", w: ["od", "iz", "sa"] },
+  { q: "seit", c: "od (vremena)", w: ["do", "pre", "posle"] },
+  { q: "durch", c: "kroz", w: ["preko", "pored", "oko"] },
+  { q: "um", c: "oko / u (vreme)", w: ["kroz", "preko", "pored"] },
+  { q: "gegenüber", c: "preko puta", w: ["pored", "ispred", "iza"] },
+  { q: "wegen", c: "zbog", w: ["uprkos", "zato", "dakle"] },
+  { q: "trotz", c: "uprkos", w: ["zbog", "zato", "dakle"] },
+  { q: "während", c: "tokom", w: ["posle", "pre", "kada"] },
+  { q: "außerhalb", c: "izvan", w: ["unutar", "pored", "oko"] },
+  { q: "innerhalb", c: "unutar", w: ["izvan", "pored", "oko"] },
+  { q: "außer", c: "osim", w: ["uključujući", "sa", "bez"] },
+
+  // ============ B1 NIVO - NAPREDNI ============
+  { q: "die Erfahrung", c: "iskustvo", w: ["znanje", "veština", "obrazovanje"] },
+  { q: "die Verantwortung", c: "odgovornost", w: ["sloboda", "dužnost", "obaveza"] },
+  { q: "die Entscheidung", c: "odluka", w: ["sumnja", "pitanje", "nesigurnost"] },
+  { q: "die Möglichkeit", c: "mogućnost", w: ["nemogućnost", "verovatnoća", "izvesnost"] },
+  { q: "die Gelegenheit", c: "prilika", w: ["problem", "prepreka", "nesreća"] },
+  { q: "die Entwicklung", c: "razvoj", w: ["nazadak", "stagnacija", "kriza"] },
+  { q: "die Veränderung", c: "promena", w: ["stagnacija", "postojanost", "stabilnost"] },
+  { q: "die Verbesserung", c: "poboljšanje", w: ["pogoršanje", "stagnacija", "nazadak"] },
+  { q: "die Verschlechterung", c: "pogoršanje", w: ["poboljšanje", "stagnacija", "napredak"] },
+  { q: "die Erweiterung", c: "proširenje", w: ["suženje", "smanjenje", "ograničenje"] },
+  { q: "die Beschränkung", c: "ograničenje", w: ["sloboda", "proširenje", "mogućnost"] },
+  { q: "die Voraussetzung", c: "pretpostavka / uslov", w: ["posledica", "rezultat", "cilj"] },
+  { q: "die Bedingung", c: "uslov", w: ["posledica", "razlog", "cilj"] },
+  { q: "die Folge", c: "posledica", w: ["uzrok", "razlog", "cilj"] },
+  { q: "die Ursache", c: "uzrok", w: ["posledica", "rezultat", "cilj"] },
+  { q: "die Wirkung", c: "dejstvo / efekat", w: ["uzrok", "posledica", "cilj"] },
+  { q: "das Ergebnis", c: "rezultat", w: ["uzrok", "posledica", "cilj"] },
+  { q: "der Zweck", c: "svrha / cilj", w: ["uzrok", "posledica", "sredstvo"] },
+  { q: "das Ziel", c: "cilj", w: ["put", "sredstvo", "prepreka"] },
+  { q: "die Absicht", c: "namera", w: ["slučajnost", "greška", "nesporazum"] },
+  { q: "der Vorschlag", c: "predlog", w: ["pitanje", "odgovor", "zahtev"] },
+  { q: "die Meinung", c: "mišljenje", w: ["činjenica", "istina", "laž"] },
+  { q: "die Ansicht", c: "gledište / mišljenje", w: ["činjenica", "istina", "laž"] },
+  { q: "die Diskussion", c: "diskusija", w: ["monolog", "predavanje", "tišina"] },
+  { q: "das Gespräch", c: "razgovor", w: ["monolog", "predavanje", "tišina"] },
+  { q: "die Besprechung", c: "sastanak", w: ["razgovor", "predavanje", "prezentacija"] },
+  { q: "die Sitzung", c: "sednica", w: ["pauza", "odmor", "sastanak"] },
+  { q: "die Vereinbarung", c: "dogovor", w: ["sporazum", "ugovor", "odluka"] },
+  { q: "der Vertrag", c: "ugovor", w: ["sporazum", "dogovor", "odluka"] },
+  { q: "die Kündigung", c: "otkaz", w: ["ugovor", "sporazum", "prijava"] },
+  { q: "die Bewerbung", c: "prijava / molba", w: ["otkaz", "ugovor", "poziv"] },
+  { q: "der Lebenslauf", c: "biografija / CV", w: ["diploma", "sertifikat", "molba"] },
+  { q: "die Unterlagen", c: "dokumentacija", w: ["knjige", "sveske", "fascikle"] },
+  { q: "das Zeugnis", c: "svedočanstvo", w: ["diploma", "sertifikat", "potvrda"] },
+  { q: "die Urkunde", c: "diploma / isprava", w: ["svedočanstvo", "sertifikat", "potvrda"] },
+  { q: "das Vorstellungsgespräch", c: "razgovor za posao", w: ["sastanak", "prezentacija", "predavanje"] },
+  { q: "der Arbeitgeber", c: "poslodavac", w: ["radnik", "zaposleni", "kolega"] },
+  { q: "der Arbeitnehmer", c: "radnik / zaposleni", w: ["poslodavac", "direktor", "šef"] },
+  { q: "der Kollege", c: "kolega", w: ["šef", "podredjeni", "klijent"] },
+  { q: "die Kollegin", c: "koleginica", w: ["šefica", "podredjena", "klijentkinja"] },
+  { q: "der Vorgesetzte", c: "nadređeni", w: ["podređeni", "kolega", "saradnik"] },
+  { q: "der Mitarbeiter", c: "saradnik / radnik", w: ["šef", "klijent", "kupac"] },
+  { q: "die Abteilung", c: "odeljenje / odsek", w: ["kancelarija", "zgrada", "firma"] },
+  { q: "die Firma", c: "firma / preduzeće", w: ["kancelarija", "radnja", "ustanova"] },
+  { q: "das Unternehmen", c: "preduzeće", w: ["kancelarija", "radnja", "ustanova"] },
+  { q: "der Betrieb", c: "pogon / firma", w: ["kancelarija", "radnja", "ustanova"] },
+  { q: "die Wirtschaft", c: "privreda / ekonomija", w: ["politika", "kultura", "sport"] },
+  { q: "der Handel", c: "trgovina", w: ["industrija", "poljoprivreda", "usluge"] },
+  { q: "die Industrie", c: "industrija", w: ["trgovina", "poljoprivreda", "usluge"] },
+  { q: "die Landwirtschaft", c: "poljoprivreda", w: ["industrija", "trgovina", "usluge"] },
+  { q: "der Dienstleistungssektor", c: "uslužni sektor", w: ["industrija", "poljoprivreda", "trgovina"] },
+  { q: "die Steuer", c: "porez", w: ["plata", "penzija", "kamata"] },
+  { q: "die Mehrwertsteuer", c: "PDV", w: ["porez na dohodak", "akciza", "carina"] },
+  { q: "das Gehalt", c: "plata", w: ["penzija", "kamata", "porez"] },
+  { q: "der Lohn", c: "nadnica / plata", w: ["penzija", "kamata", "porez"] },
+  { q: "das Einkommen", c: "prihod", w: ["rashod", "dug", "kredit"] },
+  { q: "die Ausgabe", c: "izdatak", w: ["prihod", "ušteda", "kredit"] },
+  { q: "die Zinsen", c: "kamata", w: ["kredit", "porez", "penzija"] },
+  { q: "der Kredit", c: "kredit", w: ["kamata", "porez", "penzija"] },
+  { q: "die Schulden", c: "dugovi", w: ["ušteda", "prihod", "kredit"] },
+  { q: "die Rente", c: "penzija", w: ["plata", "kamata", "porez"] },
+  { q: "die Versicherung", c: "osiguranje", w: ["banka", "kredit", "kamata"] },
+  { q: "die Steuererklärung", c: "poreska prijava", w: ["poreska olakšica", "poreska stopa", "poreska uprava"] },
+  { q: "die Gesundheit", c: "zdravlje", w: ["bolest", "snaga", "slabost"] },
+  { q: "die Ernährung", c: "ishrana", w: ["dijeta", "glad", "apetit"] },
+  { q: "die Bewegung", c: "kretanje / vežbanje", w: ["mirovanje", "stajanje", "sedenje"] },
+  { q: "die Entspannung", c: "opuštanje", w: ["napetost", "stres", "umor"] },
+  { q: "der Stress", c: "stres", w: ["opuštanje", "mir", "spokoj"] },
+  { q: "die Ruhe", c: "mir / tišina", w: ["buka", "stres", "napetost"] },
+  { q: "der Schlaf", c: "san", w: ["budnost", "umor", "odmor"] },
+  { q: "die Erholung", c: "odmor / oporavak", w: ["umor", "iscrpljenost", "stres"] },
+  { q: "die Krankheit", c: "bolest", w: ["zdravlje", "snaga", "slabost"] },
+  { q: "die Behandlung", c: "lečenje / tretman", w: ["pregled", "dijagnoza", "operacija"] },
+  { q: "die Untersuchung", c: "pregled", w: ["operacija", "terapija", "dijagnoza"] },
+  { q: "die Operation", c: "operacija", w: ["pregled", "terapija", "dijagnoza"] },
+  { q: "die Therapie", c: "terapija", w: ["pregled", "operacija", "dijagnoza"] },
+  { q: "die Medizin", c: "medicina / lek", w: ["bolest", "zdravlje", "terapija"] },
+  { q: "das Medikament", c: "lek", w: ["vakcina", "tableta", "sirup"] },
+  { q: "die Tablette", c: "tableta", w: ["sirup", "kapsula", "injekcija"] },
+  { q: "die Salbe", c: "mast", w: ["tableta", "sirup", "kapsula"] },
+  { q: "die Impfung", c: "vakcina / vakcinacija", w: ["lek", "tableta", "injekcija"] },
+  { q: "die Wunde", c: "rana", w: ["ožiljak", "modrica", "povreda"] },
+  { q: "die Verletzung", c: "povreda", w: ["bolest", "infekcija", "ozleda"] },
+  { q: "der Unfall", c: "nesreća", w: ["bolest", "povreda", "incident"] },
+  { q: "die Notaufnahme", c: "hitna pomoć", w: ["apoteka", "ordinacija", "bolnica"] },
+  { q: "der Notarzt", c: "hitni lekar", w: ["lekar opšte prakse", "specijalista", "zubar"] },
+  { q: "die Krankenversicherung", c: "zdravstveno osiguranje", w: ["penziono osiguranje", "životno osiguranje", "auto osiguranje"] },
+  { q: "die Umwelt", c: "životna sredina", w: ["priroda", "ekologija", "klima"] },
+  { q: "der Umweltschutz", c: "zaštita životne sredine", w: ["zagađenje", "uništavanje", "eksploatacija"] },
+  { q: "die Verschmutzung", c: "zagađenje", w: ["zaštita", "čišćenje", "očuvanje"] },
+  { q: "der Müll", c: "smeće / otpad", w: ["reciklaža", "čišćenje", "otpad"] },
+  { q: "die Recycling", c: "reciklaža", w: ["smeće", "otpad", "zagađenje"] },
+  { q: "die Energie", c: "energija", w: ["snaga", "struja", "gorivo"] },
+  { q: "der Strom", c: "struja", w: ["voda", "gas", "grejanje"] },
+  { q: "das Wasser", c: "voda", w: ["struja", "gas", "grejanje"] },
+  { q: "die Heizung", c: "grejanje", w: ["hlađenje", "ventilacija", "klima"] },
+  { q: "die Klimaanlage", c: "klima uređaj", w: ["grejanje", "ventilacija", "prozor"] },
+  { q: "die Luftverschmutzung", c: "zagađenje vazduha", w: ["zagađenje vode", "zagađenje zemljišta", "buka"] },
+  { q: "der Klimawandel", c: "klimatske promene", w: ["globalno zagrevanje", "ekološka kriza", "prirodna katastrofa"] },
+  { q: "die Gesellschaft", c: "društvo", w: ["zajednica", "grupa", "narod"] },
+  { q: "die Bevölkerung", c: "stanovništvo", w: ["nacija", "narod", "društvo"] },
+  { q: "die Regierung", c: "vlada", w: ["parlament", "skupština", "predsednik"] },
+  { q: "das Parlament", c: "parlament", w: ["vlada", "skupština", "predsednik"] },
+  { q: "die Wahl", c: "izbor / izbori", w: ["odluka", "glasanje", "kandidatura"] },
+  { q: "die Partei", c: "partija / stranka", w: ["vlada", "parlament", "koalicija"] },
+  { q: "der Bürger", c: "građanin", w: ["stranac", "državljanin", "posetilac"] },
+  { q: "die Staatsangehörigkeit", c: "državljanstvo", w: ["boravak", "viza", "pasoš"] },
+  { q: "die Demokratie", c: "demokratija", w: ["monarhija", "diktatura", "anarhija"] },
+  { q: "die Freiheit", c: "sloboda", w: ["robstvo", "zatvor", "obaveza"] },
+  { q: "die Gerechtigkeit", c: "pravda", w: ["nepravda", "jednakost", "sloboda"] },
+  { q: "der Frieden", c: "mir", w: ["rat", "sukob", "nesloga"] },
+  { q: "der Krieg", c: "rat", w: ["mir", "bitka", "pobeda"] },
+  { q: "die Sicherheit", c: "sigurnost", w: ["opasnost", "rizik", "nesigurnost"] },
+  { q: "die Kriminalität", c: "kriminal", w: ["sigurnost", "pravda", "zakon"] },
+  { q: "das Gesetz", c: "zakon", w: ["pravilo", "propis", "uredba"] },
+  { q: "das Recht", c: "pravo", w: ["obaveza", "dužnost", "zabrana"] },
+  { q: "die Pflicht", c: "obaveza / dužnost", w: ["pravo", "sloboda", "želja"] },
+  { q: "die Bildung", c: "obrazovanje", w: ["vaspitanje", "školovanje", "učenje"] },
+  { q: "die Ausbildung", c: "obrazovanje / stručno osposobljavanje", w: ["vaspitanje", "školovanje", "učenje"] },
+  { q: "die Erziehung", c: "vaspitanje", w: ["obrazovanje", "školovanje", "učenje"] },
+  { q: "die Wissenschaft", c: "nauka", w: ["umetnost", "sport", "kultura"] },
+  { q: "die Forschung", c: "istraživanje", w: ["pronalazak", "otkriće", "studija"] },
+  { q: "die Technik", c: "tehnika", w: ["tehnologija", "nauka", "umetnost"] },
+  { q: "die Technologie", c: "tehnologija", w: ["tehnika", "nauka", "umetnost"] },
+  { q: "die Kunst", c: "umetnost", w: ["nauka", "sport", "muzika"] },
+  { q: "die Kultur", c: "kultura", w: ["civilizacija", "tradicija", "običaj"] },
+  { q: "die Geschichte", c: "istorija / priča", w: ["geografija", "politika", "kultura"] },
+  { q: "die Geografie", c: "geografija", w: ["istorija", "politika", "kultura"] },
+  { q: "die Sprache", c: "jezik", w: ["država", "grad", "reč"] },
+  { q: "die Muttersprache", c: "maternji jezik", w: ["strani jezik", "dijalekt", "akcenat"] },
+  { q: "die Fremdsprache", c: "strani jezik", w: ["maternji jezik", "dijalekt", "gramatika"] },
+  { q: "die Übersetzung", c: "prevod", w: ["original", "tekst", "rečnik"] },
+  { q: "der Übersetzer", c: "prevodilac", w: ["pisac", "urednik", "lektor"] },
+  { q: "die Aussprache", c: "izgovor", w: ["pisanje", "čitanje", "slušanje"] },
+  { q: "die Bedeutung", c: "značenje", w: ["izgovor", "pisanje", "upotreba"] },
+  { q: "die Grammatik", c: "gramatika", w: ["pravopis", "rečnik", "izgovor"] },
+  { q: "das Wort", c: "reč", w: ["slovo", "rečenica", "tekst"] },
+  { q: "der Satz", c: "rečenica", w: ["reč", "pasus", "tekst"] },
+  { q: "der Absatz", c: "pasus", w: ["rečenica", "reč", "poglavlje"] },
+  { q: "das Kapitel", c: "poglavlje", w: ["pasus", "strana", "knjiga"] },
+  { q: "die Seite", c: "strana", w: ["poglavlje", "pasus", "knjiga"] },
+  { q: "das Buch", c: "knjiga", w: ["sveska", "novine", "časopis"] },
+  { q: "die Zeitung", c: "novine", w: ["časopis", "knjiga", "sveska"] },
+  { q: "die Zeitschrift", c: "časopis", w: ["novine", "knjiga", "sveska"] },
+  { q: "der Brief", c: "pismo", w: ["razglednica", "poruka", "mejl"] },
+  { q: "die E-Mail", c: "imejl", w: ["pismo", "poruka", "razglednica"] },
+  { q: "die Nachricht", c: "poruka / vest", w: ["pismo", "poziv", "razgovor"] },
+  { q: "die Nachrichten", c: "vesti", w: ["poruke", "novine", "časopisi"] },
+  { q: "die Information", c: "informacija", w: ["pitanje", "odgovor", "poruka"] },
+  { q: "die Auskunft", c: "informacija", w: ["pitanje", "odgovor", "poruka"] },
+  { q: "die Werbung", c: "reklama", w: ["vest", "poruka", "obaveštenje"] },
+  { q: "die Sendung", c: "emisija", w: ["reklama", "vest", "film"] },
+  { q: "die Nachrichten", c: "dnevnik (TV)", w: ["emisija", "film", "serija"] },
+  { q: "der Film", c: "film", w: ["serija", "emisija", "dokumentarac"] },
+  { q: "die Serie", c: "serija", w: ["film", "emisija", "dokumentarac"] },
+  { q: "das Programm", c: "program", w: ["film", "serija", "emisija"] },
+  { q: "die Veranstaltung", c: "događaj / priredba", w: ["program", "emisija", "predstava"] },
+  { q: "die Ausstellung", c: "izložba", w: ["predstava", "koncert", "muzej"] },
+  { q: "das Konzert", c: "koncert", w: ["predstava", "izložba", "festival"] },
+  { q: "das Theater", c: "pozorište", w: ["bioskop", "opera", "balet"] },
+  { q: "das Kino", c: "bioskop", w: ["pozorište", "opera", "balet"] },
+  { q: "die Oper", c: "opera", w: ["pozorište", "bioskop", "balet"] },
+  { q: "das Museum", c: "muzej", w: ["galerija", "pozorište", "biblioteka"] },
+  { q: "die Galerie", c: "galerija", w: ["muzej", "pozorište", "biblioteka"] },
+  { q: "die Bibliothek", c: "biblioteka", w: ["knjižara", "muzej", "galerija"] },
+  { q: "die Eintrittskarte", c: "ulaznica", w: ["vozna karta", "rezervacija", "pozivnica"] },
+  { q: "der Eintritt", c: "ulaz", w: ["izlaz", "prolaz", "ulaznica"] },
+  { q: "frei", c: "slobodan / besplatan", w: ["zauzet", "plaćen", "rezervisan"] },
+  { q: "kostenlos", c: "besplatno", w: ["plaćeno", "skupo", "jeftino"] },
+  { q: "die Reise", c: "putovanje", w: ["odmor", "posao", "izlet"] },
+  { q: "der Urlaub", c: "odmor / godišnji", w: ["posao", "put", "vikend"] },
+  { q: "die Ferien", c: "raspust", w: ["odmor", "praznik", "vikend"] },
+  { q: "der Ausflug", c: "izlet", w: ["putovanje", "odmor", "poseta"] },
+  { q: "die Geschäftsreise", c: "poslovno putovanje", w: ["odmor", "izlet", "poseta"] },
+  { q: "das Hotel", c: "hotel", w: ["motel", "hostel", "apartman"] },
+  { q: "die Jugendherberge", c: "omladinski hostel", w: ["hotel", "motel", "apartman"] },
+  { q: "die Pension", c: "pansion", w: ["hotel", "motel", "hostel"] },
+  { q: "das Zimmer", c: "soba", w: ["apartman", "studio", "garsonjera"] },
+  { q: "die Reservierung", c: "rezervacija", w: ["otkazivanje", "prijava", "odjava"] },
+  { q: "die Anmeldung", c: "prijava", w: ["odjava", "rezervacija", "otkazivanje"] },
+  { q: "die Abmeldung", c: "odjava", w: ["prijava", "rezervacija", "otkazivanje"] },
+  { q: "der Aufenthalt", c: "boravak", w: ["polazak", "dolazak", "putovanje"] },
+  { q: "die Ankunft", c: "dolazak", w: ["polazak", "odlazak", "boravak"] },
+  { q: "die Abfahrt", c: "polazak", w: ["dolazak", "odlazak", "boravak"] },
+  { q: "der Abflug", c: "poletanje", w: ["sletanje", "dolazak", "polazak"] },
+  { q: "die Landung", c: "sletanje", w: ["poletanje", "dolazak", "polazak"] },
+  { q: "der Koffer", c: "kofer", w: ["ranac", "torba", "tašna"] },
+  { q: "das Gepäck", c: "prtljag", w: ["kofer", "ranac", "torba"] },
+  { q: "der Rucksack", c: "ranac", w: ["tašna", "kofer", "torba"] },
+  { q: "die Tasche", c: "tašna / torba", w: ["novčanik", "kofer", "ranac"] },
+  { q: "der Pass", c: "pasoš", w: ["lična karta", "vozačka dozvola", "viza"] },
+  { q: "das Visum", c: "viza", w: ["pasoš", "lična karta", "vozačka dozvola"] },
+  { q: "die Grenze", c: "granica", w: ["carina", "kontrola", "prelaz"] },
+  { q: "der Zoll", c: "carina", w: ["granica", "kontrola", "prelaz"] },
+  { q: "die Kontrolle", c: "kontrola", w: ["pregled", "provjera", "nadzor"] },
+
+  // ============ DODATNI GLAGOLI ============
+  { q: "beschreiben", c: "opisati", w: ["nacrtati", "pokazati", "prećutati"] },
+  { q: "erklären", c: "objasniti", w: ["pitati", "zbuniti", "prećutati"] },
+  { q: "bemerken", c: "primetiti", w: ["ignorisati", "zaboraviti", "prevideti"] },
+  { q: "beobachten", c: "posmatrati", w: ["učestvovati", "ignorisati", "prekinuti"] },
+  { q: "bemerken", c: "primetiti", w: ["ignorisati", "zaboraviti", "prevideti"] },
+  { q: "erkennen", c: "prepoznati", w: ["zaboraviti", "pomešati", "zanemariti"] },
+  { q: "verstehen", c: "razumeti", w: ["zbuniti se", "pogrešiti", "zaboraviti"] },
+  { q: "begreifen", c: "shvatiti", w: ["zbuniti se", "pogrešiti", "zaboraviti"] },
+  { q: "zweifeln", c: "sumnjati", w: ["verovati", "znati", "potvrditi"] },
+  { q: "bezweifeln", c: "sumnjati u", w: ["verovati", "znati", "potvrditi"] },
+  { q: "glauben", c: "verovati", w: ["sumnjati", "znati", "poricati"] },
+  { q: "vertrauen", c: "verovati / imati poverenje", w: ["sumnjati", "bojati se", "prezirati"] },
+  { q: "zweifeln", c: "sumnjati", w: ["verovati", "znati", "potvrditi"] },
+  { q: "hoffen", c: "nadati se", w: ["sumnjati", "bojati se", "želeti"] },
+  { q: "wünschen", c: "želeti", w: ["morati", "moći", "hteti"] },
+  { q: "erwarten", c: "očekivati", w: ["iznenaditi se", "sumnjati", "želeti"] },
+  { q: "erwarten", c: "očekivati", w: ["iznenaditi se", "sumnjati", "želeti"] },
+  { q: "überraschen", c: "iznenaditi", w: ["očekivati", "pripremiti", "najaviti"] },
+  { q: "erschrecken", c: "uplašiti se", w: ["obradovati se", "iznenaditi se", "naljutiti se"] },
+  { q: "fürchten", c: "bojati se", w: ["radovati se", "tužiti se", "ljutiti se"] },
+  { q: "sich fürchten", c: "bojati se", w: ["radovati se", "tužiti se", "ljutiti se"] },
+  { q: "Angst haben", c: "plašiti se", w: ["radovati se", "nadati se", "tugovati"] },
+  { q: "sich freuen", c: "radovati se", w: ["tužiti se", "ljutiti se", "bojati se"] },
+  { q: "sich ärgern", c: "ljutiti se", w: ["radovati se", "tužiti se", "bojati se"] },
+  { q: "sich aufregen", c: "uznemiriti se", w: ["smiriti se", "opustiti se", "umiriti se"] },
+  { q: "sich beruhigen", c: "smiriti se", w: ["uznemiriti se", "naljutiti se", "uzbuditi se"] },
+  { q: "sich entschuldigen", c: "izviniti se", w: ["zahvaliti se", "pozdraviti se", "predstaviti se"] },
+  { q: "sich bedanken", c: "zahvaliti se", w: ["izviniti se", "pozdraviti se", "predstaviti se"] },
+  { q: "sich vorstellen", c: "predstaviti se", w: ["izviniti se", "zahvaliti se", "pozdraviti se"] },
+  { q: "sich verabschieden", c: "pozdraviti se / oprostiti se", w: ["pozdraviti", "sresti se", "dogovoriti se"] },
+  { q: "sich unterhalten", c: "razgovarati / zabavljati se", w: ["ćutati", "slušati", "gledati"] },
+  { q: "sich treffen", c: "sresti se / sastati se", w: ["izbeći", "napustiti", "otići"] },
+  { q: "sich verabreden", c: "dogovoriti se", w: ["otkazati", "zaboraviti", "odbijati"] },
+  { q: "sich verspäten", c: "zakasniti", w: ["poraniti", "stići na vreme", "požuriti"] },
+  { q: "sich beeilen", c: "požuriti se", w: ["usporiti", "stati", "čekati"] },
+  { q: "sich ausruhen", c: "odmarati se", w: ["raditi", "truditi se", "žuriti"] },
+  { q: "sich erholen", c: "oporaviti se", w: ["razboleti se", "iscrpljivati se", "raditi"] },
+  { q: "sich entspannen", c: "opustiti se", w: ["napeti se", "umiriti se", "uzbuditi se"] },
+  { q: "sich konzentrieren", c: "koncentrisati se", w: ["rastresti se", "opustiti se", "zabavljati se"] },
+  { q: "sich irren", c: "grepšiti se", w: ["biti u pravu", "pogoditi", "znati"] },
+  { q: "sich verletzen", c: "povrediti se", w: ["izlečiti se", "oporaviti se", "ozdraviti"] },
+  { q: "sich erkälten", c: "prehladiti se", w: ["izlečiti se", "ozdraviti", "oporaviti se"] },
+  { q: "sich waschen", c: "prati se", w: ["brisati se", "sušiti se", "čistiti se"] },
+  { q: "sich duschen", c: "tuširati se", w: ["kupati se", "prati se", "brisati se"] },
+  { q: "sich baden", c: "kupati se", w: ["tuširati se", "prati se", "brisati se"] },
+  { q: "sich kämmen", c: "češljati se", w: ["prati kosu", "šišati se", "brijati se"] },
+  { q: "sich rasieren", c: "brijati se", w: ["šišati se", "češljati se", "prati se"] },
+  { q: "sich schminken", c: "šminkati se", w: ["prati se", "brijati se", "češljati se"] },
+  { q: "sich anziehen", c: "obući se", w: ["svući se", "presvući se", "kupiti se"] },
+  { q: "sich ausziehen", c: "svući se", w: ["obući se", "presvući se", "kupiti se"] },
+  { q: "sich umziehen", c: "presvući se", w: ["obući se", "svući se", "kupiti se"] },
+  { q: "sich setzen", c: "sesti", w: ["ustati", "stajati", "leći"] },
+  { q: "sich legen", c: "leći", w: ["ustati", "sesti", "stajati"] },
+  { q: "sich erheben", c: "ustati / podići se", w: ["sesti", "leći", "stajati"] },
+  { q: "sich nähern", c: "približavati se", w: ["udaljavati se", "stajati", "čekati"] },
+  { q: "sich entfernen", c: "udaljavati se", w: ["približavati se", "stajati", "čekati"] },
+  { q: "sich verstecken", c: "sakriti se", w: ["pokazati se", "otkriti se", "pojaviti se"] },
+  { q: "sich zeigen", c: "pokazati se", w: ["sakriti se", "povući se", "nestati"] },
+  { q: "sich verändern", c: "promeniti se", w: ["ostati isti", "zadržati se", "ustaliti se"] },
+  { q: "sich entwickeln", c: "razvijati se", w: ["stagnirati", "nazadovati", "propasti"] },
+  { q: "sich verbessern", c: "poboljšati se", w: ["pogoršati se", "stagnirati", "nazadovati"] },
+  { q: "sich verschlechtern", c: "pogoršati se", w: ["poboljšati se", "stagnirati", "napredovati"] },
+  { q: "sich erhöhen", c: "povećati se", w: ["smanjiti se", "stagnirati", "zadržati se"] },
+  { q: "sich verringern", c: "smanjiti se", w: ["povećati se", "stagnirati", "zadržati se"] },
+  { q: "sich verlängern", c: "produžiti se", w: ["skratiti se", "prekinuti se", "završiti se"] },
+  { q: "sich verkürzen", c: "skratiti se", w: ["produžiti se", "prekinuti se", "završiti se"] },
+
+  // ============ DODATNE IMENICE ============
+  { q: "die Freundschaft", c: "prijateljstvo", w: ["neprijateljstvo", "poznanstvo", "ljubav"] },
+  { q: "die Liebe", c: "ljubav", w: ["mržnja", "prijateljstvo", "simpatija"] },
+  { q: "die Hochzeit", c: "svadba / venčanje", w: ["razvod", "veridba", "prosidba"] },
+  { q: "die Ehe", c: "brak", w: ["razvod", "veridba", "ljubav"] },
+  { q: "die Scheidung", c: "razvod", w: ["venčanje", "veridba", "prosidba"] },
+  { q: "die Verlobung", c: "veridba", w: ["venčanje", "razvod", "prosidba"] },
+  { q: "der Verlobte", c: "verenik", w: ["mladoženja", "muž", "partner"] },
+  { q: "die Verlobte", c: "verenica", w: ["mlada", "žena", "partnerka"] },
+  { q: "der Bräutigam", c: "mladoženja", w: ["verenik", "muž", "partner"] },
+  { q: "die Braut", c: "mlada", w: ["verenica", "žena", "partnerka"] },
+  { q: "der Ehemann", c: "muž", w: ["verenik", "partner", "mladoženja"] },
+  { q: "die Ehefrau", c: "žena / supruga", w: ["verenica", "partnerka", "mlada"] },
+  { q: "der Partner", c: "partner", w: ["muž", "verenik", "prijatelj"] },
+  { q: "die Partnerin", c: "partnerka", w: ["žena", "verenica", "prijateljica"] },
+  { q: "das Paar", c: "par", w: ["pojedinac", "grupa", "društvo"] },
+  { q: "die Beziehung", c: "veza / odnos", w: ["raskid", "brak", "prijateljstvo"] },
+  { q: "die Trennung", c: "razdvajanje / raskid", w: ["spajanje", "venčanje", "pomirenje"] },
+  { q: "die Geburt", c: "rođenje", w: ["smrt", "venčanje", "krštenje"] },
+  { q: "der Tod", c: "smrt", w: ["život", "rođenje", "bolest"] },
+  { q: "das Leben", c: "život", w: ["smrt", "rođenje", "bolest"] },
+  { q: "die Kindheit", c: "detinjstvo", w: ["mladost", "starost", "zrelost"] },
+  { q: "die Jugend", c: "mladost", w: ["detinjstvo", "starost", "zrelost"] },
+  { q: "das Alter", c: "starost / godine", w: ["mladost", "detinjstvo", "zrelost"] },
+  { q: "der Erwachsene", c: "odrasli", w: ["dete", "mladić", "starac"] },
+  { q: "der Jugendliche", c: "mladić / adolescent", w: ["dete", "odrasli", "starac"] },
+  { q: "der Senior", c: "senior / stariji", w: ["junior", "dete", "mladić"] },
+  { q: "die Generation", c: "generacija", w: ["pojedinac", "grupa", "društvo"] },
+  { q: "die Nachbarschaft", c: "komšiluk", w: ["prijateljstvo", "rodbina", "društvo"] },
+  { q: "die Verwandtschaft", c: "rodbina", w: ["prijateljstvo", "komšiluk", "društvo"] },
+  { q: "der Verwandte", c: "rođak", w: ["prijatelj", "komšija", "kolega"] },
+  { q: "die Verwandte", c: "rođaka", w: ["prijateljica", "komšinica", "koleginica"] },
+  { q: "der Bekannte", c: "znanac", w: ["prijatelj", "rođak", "kolega"] },
+  { q: "der Freund", c: "prijatelj", w: ["neprijatelj", "znanac", "rođak"] },
+  { q: "die Freundin", c: "prijateljica / devojka", w: ["neprijateljica", "znanica", "rođaka"] },
+  { q: "der Feind", c: "neprijatelj", w: ["prijatelj", "znanac", "rođak"] },
+  { q: "der Gast", c: "gost", w: ["domaćin", "prijatelj", "rođak"] },
+  { q: "der Gastgeber", c: "domaćin", w: ["gost", "prijatelj", "rođak"] },
+  { q: "die Gastfreundschaft", c: "gostoprimstvo", w: ["neljubaznost", "sebičnost", "hladnoća"] },
+  { q: "die Höflichkeit", c: "pristojnost", w: ["nepristojnost", "bezobrazluk", "drskost"] },
+  { q: "die Freundlichkeit", c: "ljubaznost", w: ["neljubaznost", "bezobrazluk", "drskost"] },
+  { q: "die Hilfsbereitschaft", c: "spremnost da se pomogne", w: ["sebičnost", "ravnodušnost", "lenjost"] },
+  { q: "die Pünktlichkeit", c: "tačnost", w: ["netačnost", "kašnjenje", "neodgovornost"] },
+  { q: "die Zuverlässigkeit", c: "pouzdanost", w: ["nepouzdanost", "nesigurnost", "sumnjivost"] },
+  { q: "die Ehrlichkeit", c: "iskrenost", w: ["neiskrenost", "lažljivost", "prevrtljivost"] },
+  { q: "die Geduld", c: "strpljenje", w: ["nestrpljenje", "ljutnja", "brzina"] },
+  { q: "die Toleranz", c: "tolerancija", w: ["netolerancija", "isključivost", "predrasuda"] },
+  { q: "der Respekt", c: "poštovanje", w: ["nepoštovanje", "prezir", "omalovažavanje"] },
+  { q: "das Vertrauen", c: "poverenje", w: ["nepoverenje", "sumnja", "sumnjičavost"] },
+  { q: "die Verantwortung", c: "odgovornost", w: ["neodgovornost", "sloboda", "ravnodušnost"] },
+  { q: "die Selbstständigkeit", c: "samostalnost", w: ["zavisnost", "nesamostalnost", "podređenost"] },
+  { q: "die Selbstsicherheit", c: "samopouzdanje", w: ["nesigurnost", "stidljivost", "sramežljivost"] },
+  { q: "der Mut", c: "hrabrost", w: ["strah", "kukavičluk", "plašljivost"] },
+  { q: "die Angst", c: "strah", w: ["hrabrost", "smelost", "odvažnost"] },
+  { q: "die Freude", c: "radost", w: ["tuga", "strah", "ljutnja"] },
+  { q: "die Trauer", c: "tuga", w: ["radost", "sreća", "veselje"] },
+  { q: "die Wut", c: "bes / ljutnja", w: ["smirenost", "radost", "tuga"] },
+  { q: "der Ärger", c: "ljutnja / nevolja", w: ["radost", "smirenost", "zadovoljstvo"] },
+  { q: "die Überraschung", c: "iznenađenje", w: ["očekivanje", "predviđanje", "planiranje"] },
+  { q: "die Enttäuschung", c: "razočaranje", w: ["oduševljenje", "zadovoljstvo", "radost"] },
+  { q: "die Begeisterung", c: "oduševljenje", w: ["ravnodušnost", "razočaranje", "hladnoća"] },
+  { q: "die Zufriedenheit", c: "zadovoljstvo", w: ["nezadovoljstvo", "sreća", "tuga"] },
+  { q: "die Unzufriedenheit", c: "nezadovoljstvo", w: ["zadovoljstvo", "sreća", "radost"] },
+  { q: "die Neugier", c: "radoznalost", w: ["ravnodušnost", "nezainteresovanost", "dosada"] },
+  { q: "die Langeweile", c: "dosada", w: ["zabava", "uzbuđenje", "interesovanje"] },
+  { q: "die Unterhaltung", c: "zabava / razgovor", w: ["dosada", "tišina", "monolog"] },
+  { q: "das Vergnügen", c: "zadovoljstvo / užitak", w: ["dosada", "muka", "patnja"] },
+  { q: "das Abenteuer", c: "avantura", w: ["dosada", "rutina", "sigurnost"] },
+  { q: "das Erlebnis", c: "doživljaj", w: ["dogadjaj", "priča", "uspomena"] },
+  { q: "die Erfahrung", c: "iskustvo", w: ["znanje", "veština", "obrazovanje"] },
+  { q: "die Erinnerung", c: "sećanje", w: ["zaborav", "sadašnjost", "budućnost"] },
+  { q: "die Vorstellung", c: "predstava / zamisao", w: ["stvarnost", "činjenica", "realnost"] },
+  { q: "die Fantasie", c: "fantazija", w: ["stvarnost", "činjenica", "realnost"] },
+  { q: "der Traum", c: "san", w: ["java", "stvarnost", "činjenica"] },
+  { q: "der Alptraum", c: "noćna mora", w: ["san", "dnevni san", "mašta"] },
+  { q: "die Wirklichkeit", c: "stvarnost", w: ["fantazija", "san", "mašta"] },
+  { q: "die Wahrheit", c: "istina", w: ["laž", "izmišljotina", "prevara"] },
+  { q: "die Lüge", c: "laž", w: ["istina", "činjenica", "realnost"] },
+  { q: "das Geheimnis", c: "tajna", w: ["javnost", "otkriće", "obelodanjivanje"] },
+  { q: "die Lösung", c: "rešenje", w: ["problem", "zadatak", "pitanje"] },
+  { q: "das Problem", c: "problem", w: ["rešenje", "odgovor", "pitanje"] },
+  { q: "die Schwierigkeit", c: "teškoća", w: ["lakoća", "jednostavnost", "prostota"] },
+  { q: "der Vorteil", c: "prednost", w: ["nedostatak", "mana", "slabost"] },
+  { q: "der Nachteil", c: "nedostatak", w: ["prednost", "vrlina", "kvalitet"] },
+  { q: "die Möglichkeit", c: "mogućnost", w: ["nemogućnost", "verovatnoća", "izvesnost"] },
+  { q: "die Notwendigkeit", c: "neophodnost", w: ["nepotreba", "suvišnost", "opcionost"] },
+  { q: "der Zufall", c: "slučajnost", w: ["namera", "plan", "cilj"] },
+  { q: "das Schicksal", c: "sudbina", w: ["slučajnost", "izbor", "odluka"] },
+  { q: "die Zukunft", c: "budućnost", w: ["prošlost", "sadašnjost", "sada"] },
+  { q: "die Vergangenheit", c: "prošlost", w: ["budućnost", "sadašnjost", "sada"] },
+  { q: "die Gegenwart", c: "sadašnjost", w: ["prošlost", "budućnost", "sada"] },
+];
+
+/* =====================================================================
+   LOGIKA KVIZA
+   ===================================================================== */
+const BROJ_PITANJA = 20; // promeni na željeni broj pitanja
+
+let quizQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+
+const questionText = document.getElementById('questionText');
+const optionsContainer = document.getElementById('optionsContainer');
+const feedback = document.getElementById('feedback');
+const nextBtn = document.getElementById('nextBtn');
+const questionCounter = document.getElementById('questionCounter');
+const scoreDisplay = document.getElementById('scoreDisplay');
+const quizView = document.getElementById('quizView');
+const finishView = document.getElementById('finishView');
+const finalScore = document.getElementById('finalScore');
+const restartBtn = document.getElementById('restartBtn');
+const totalQuestionsSpan = document.getElementById('totalQuestions');
+const numQuestionsSpan = document.getElementById('numQuestions');
+
+totalQuestionsSpan.textContent = wordDatabase.length;
+numQuestionsSpan.textContent = BROJ_PITANJA;
+
+// Fisher-Yates shuffle
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
+  return a;
+}
+
+// Priprema kviza - nasumično bira N reči i meša odgovore
+function prepareQuiz() {
+  const shuffled = shuffle(wordDatabase);
+  // Osiguravamo da nema duplikata pitanja
+  const seen = new Set();
+  const selected = [];
+  for (const word of shuffled) {
+    if (!seen.has(word.q)) {
+      seen.add(word.q);
+      selected.push(word);
+    }
+    if (selected.length >= BROJ_PITANJA) break;
+  }
+  quizQuestions = selected.map(word => {
+    const allOptions = shuffle([word.c, ...word.w]);
+    return {
+      question: word.q,
+      options: allOptions,
+      correctIndex: allOptions.indexOf(word.c)
+    };
+  });
+}
+
+function loadQuestion() {
+  const q = quizQuestions[currentIndex];
+  questionText.textContent = q.question;
+  questionCounter.textContent = `Pitanje ${currentIndex + 1} / ${BROJ_PITANJA}`;
+  scoreDisplay.textContent = score;
+
+  answered = false;
+  nextBtn.disabled = true;
+  feedback.textContent = 'Izaberi odgovor';
+  feedback.style.background = 'rgba(0,0,0,0.3)';
+  feedback.style.color = '#f2e9d0';
+
+  optionsContainer.innerHTML = '';
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => handleAnswer(idx, btn));
+    optionsContainer.appendChild(btn);
+  });
+}
+
+function handleAnswer(selectedIdx, btnEl) {
+  if (answered) return;
+  answered = true;
+
+  const q = quizQuestions[currentIndex];
+  const allBtns = document.querySelectorAll('.option');
+  allBtns.forEach(b => b.classList.add('disabled'));
+
+  allBtns.forEach((b, idx) => {
+    if (idx === q.correctIndex) b.classList.add('correct');
+    else if (idx === selectedIdx) b.classList.add('wrong');
+  });
+
+  if (selectedIdx === q.correctIndex) {
+    score++;
+    scoreDisplay.textContent = score;
+    feedback.textContent = '✅ Tačno!';
+    feedback.style.background = '#2a5e3a';
+    feedback.style.color = '#fff';
+  } else {
+    feedback.textContent = `❌ Netačno. Tačan odgovor: ${q.options[q.correctIndex]}`;
+    feedback.style.background = '#6d2e2a';
+    feedback.style.color = '#fff';
+  }
+
+  nextBtn.disabled = false;
+}
+
+function nextQuestion() {
+  if (!answered) return;
+  if (currentIndex < BROJ_PITANJA - 1) {
+    currentIndex++;
+    loadQuestion();
+  } else {
+    quizView.classList.add('hidden');
+    finishView.classList.remove('hidden');
+    finalScore.textContent = `Osvojili ste ${score} / ${BROJ_PITANJA} poena`;
+  }
+}
+
+function restartQuiz() {
+  currentIndex = 0;
+  score = 0;
+  answered = false;
+  prepareQuiz();
+  quizView.classList.remove('hidden');
+  finishView.classList.add('hidden');
+  loadQuestion();
+}
+
+nextBtn.addEventListener('click', nextQuestion);
+restartBtn.addEventListener('click', restartQuiz);
+
+// Start
+prepareQuiz();
+loadQuestion();
 </script>
 </body>
 </html>
